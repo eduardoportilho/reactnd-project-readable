@@ -7,6 +7,7 @@ class HomePageContainer extends Component {
   componentDidMount() {
     this.props.fetchInitialData();
   }
+
   render() {
     const { isLoading, errorFetchingData, categories, posts } = this.props;
     return (

@@ -19,3 +19,6 @@ export const getCategories = () =>
 
 export const getAllPosts = () =>
   fetch(`${api}/posts`, { headers }).then(res => res.json());
+
+export const getPostsFromCategory = categoryPath =>
+  fetch(`${api}/${categoryPath}/posts`, { headers }).then(res => res.json());

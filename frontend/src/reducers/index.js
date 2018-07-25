@@ -1,41 +1,46 @@
 import { combineReducers } from "redux";
 import {
-  INITIAL_DATA_FETCHING_STARTED,
+  DATA_FETCHING_STARTED,
+  ERROR_FETCHING_DATA,
   INITIAL_DATA_FETCHED,
-  ERROR_FETCHING_DATA
+  CATEGORY_POSTS_FETCHED
 } from "../actions";
 
-function postData(
-  state = {
-    isLoading: false,
-    errorFetchingData: undefined,
-    categories: [],
-    posts: []
-  },
-  action
-) {
+const INITIAL_STATE = {
+  isLoading: false,
+  errorFetchingData: undefined,
+  categories: [],
+  posts: [],
+  postsFromCategory: []
+};
+
+function postData(state = INITIAL_STATE, action) {
   switch (action.type) {
-    case INITIAL_DATA_FETCHING_STARTED:
-      return Object.assign({}, state, {
+    case DATA_FETCHING_STARTED:
+      return {
+        ...INITIAL_STATE,
         isLoading: true,
-        errorFetchingData: undefined,
-        categories: [],
-        posts: []
-      });
+        categories: state.categories,
+        posts: state.posts
+      };
+    case ERROR_FETCHING_DATA:
+      return {
+        ...INITIAL_STATE,
+        errorFetchingData: action.error
+      };
     case INITIAL_DATA_FETCHED:
-      return Object.assign({}, state, {
-        isLoading: false,
-        errorFetchingData: undefined,
+      return {
+        ...INITIAL_STATE,
         categories: action.categories,
         posts: action.posts
-      });
-    case ERROR_FETCHING_DATA:
-      return Object.assign({}, state, {
-        isLoading: false,
-        errorFetchingData: action.error,
-        categories: [],
-        posts: []
-      });
+      };
+    case CATEGORY_POSTS_FETCHED:
+      return {
+        ...INITIAL_STATE,
+        postsFromCategory: action.posts,
+        categories: state.categories,
+        posts: state.posts
+      };
     default:
       return state;
   }
