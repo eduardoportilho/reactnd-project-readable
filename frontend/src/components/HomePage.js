@@ -20,7 +20,13 @@ const HomePage = ({ isLoading, errorFetchingData, categories, posts }) => (
         </div>
         <div>
           <h2>Posts</h2>
-          <ul>{posts.map(post => <li key={post.id}>{post.title}</li>)}</ul>
+          <ul>
+            {posts.map(post => (
+              <li key={post.id}>
+                <Link to={`/post/${post.id}`}>{post.title}</Link>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     )}

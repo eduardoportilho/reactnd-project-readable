@@ -1,7 +1,8 @@
 import {
   getCategories,
   getAllPosts,
-  getPostsFromCategory
+  getPostsFromCategory,
+  getPost
 } from "../utils/PostsAPI";
 
 export const DATA_FETCHING_STARTED = "DATA_FETCHING_STARTED";
@@ -37,6 +38,14 @@ function categoryPostsFetched(categories, postsFromCategory) {
   };
 }
 
+export const POST_FETCHED = "POST_FETCHED";
+function postFetched(post) {
+  return {
+    type: POST_FETCHED,
+    post
+  };
+}
+
 export const fetchInitialData = () => dispatch => {
   dispatch(dataFetchingStarted());
   Promise.all([getCategories(), getAllPosts()])
@@ -52,5 +61,12 @@ export const fetchPostsFromCategory = categoryPath => dispatch => {
     .then(([categories, postsFromCategory]) =>
       dispatch(categoryPostsFetched(categories, postsFromCategory))
     )
+    .catch(error => dispatch(errorFetchingData(error)));
+};
+
+export const fetchPost = postId => dispatch => {
+  dispatch(dataFetchingStarted());
+  getPost(postId)
+    .then(post => dispatch(postFetched(post)))
     .catch(error => dispatch(errorFetchingData(error)));
 };

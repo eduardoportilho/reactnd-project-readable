@@ -3,7 +3,8 @@ import {
   DATA_FETCHING_STARTED,
   ERROR_FETCHING_DATA,
   INITIAL_DATA_FETCHED,
-  CATEGORY_POSTS_FETCHED
+  CATEGORY_POSTS_FETCHED,
+  POST_FETCHED
 } from "../actions";
 
 const INITIAL_STATE = {
@@ -11,7 +12,8 @@ const INITIAL_STATE = {
   errorFetchingData: undefined,
   categories: [],
   posts: [],
-  postsFromCategory: []
+  postsFromCategory: [],
+  post: undefined
 };
 
 function postData(state = INITIAL_STATE, action) {
@@ -37,6 +39,11 @@ function postData(state = INITIAL_STATE, action) {
         ...INITIAL_STATE,
         postsFromCategory: action.postsFromCategory,
         categories: action.categories
+      };
+    case POST_FETCHED:
+      return {
+        ...INITIAL_STATE,
+        post: action.post
       };
     default:
       return state;
