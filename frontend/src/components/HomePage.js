@@ -8,6 +8,8 @@ const HomePage = ({ isLoading, errorFetchingData, categories, posts }) => (
       <div>Loading...</div>
     ) : (
       <div>
+        <h1>Readable</h1>
+        <Link to="/new-post">New post</Link>
         <div>
           <h2>Categories</h2>
           <ul>

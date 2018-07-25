@@ -3,7 +3,8 @@ import {
   getAllPosts,
   getPostsFromCategory,
   getPost,
-  getPostComments
+  getPostComments,
+  addNewPost
 } from "../utils/PostsAPI";
 
 export const DATA_FETCHING_STARTED = "DATA_FETCHING_STARTED";
@@ -13,11 +14,33 @@ function dataFetchingStarted() {
   };
 }
 
+export const DATA_SENDING_STARTED = "DATA_SENDING_STARTED";
+function dataSendingStarted() {
+  return {
+    type: DATA_SENDING_STARTED
+  };
+}
+
 export const ERROR_FETCHING_DATA = "ERROR_FETCHING_DATA";
 function errorFetchingData(error) {
   return {
     type: ERROR_FETCHING_DATA,
     error
+  };
+}
+
+export const ERROR_SENDING_DATA = "ERROR_SENDING_DATA";
+function errorSendingData(error) {
+  return {
+    type: ERROR_SENDING_DATA,
+    error
+  };
+}
+
+export const DATA_SENDING_COMPLETED = "DATA_SENDING_COMPLETED";
+function dataSendingCompleted() {
+  return {
+    type: DATA_SENDING_COMPLETED
   };
 }
 
@@ -48,6 +71,14 @@ function postFetched(post, comments) {
   };
 }
 
+export const CATEGORIES_FETCHED = "CATEGORIES_FETCHED";
+function categoriesFetched(categories) {
+  return {
+    type: CATEGORIES_FETCHED,
+    categories
+  };
+}
+
 export const fetchInitialData = () => dispatch => {
   dispatch(dataFetchingStarted());
   Promise.all([getCategories(), getAllPosts()])
@@ -71,4 +102,18 @@ export const fetchPost = postId => dispatch => {
   Promise.all([getPost(postId), getPostComments(postId)])
     .then(([post, comments]) => dispatch(postFetched(post, comments)))
     .catch(error => dispatch(errorFetchingData(error)));
+};
+
+export const fetchCategories = () => dispatch => {
+  dispatch(dataFetchingStarted());
+  getCategories()
+    .then(categories => dispatch(categoriesFetched(categories)))
+    .catch(error => dispatch(errorFetchingData(error)));
+};
+
+export const savePost = post => dispatch => {
+  dispatch(dataSendingStarted());
+  addNewPost(post)
+    .then(() => dispatch(dataSendingCompleted()))
+    .catch(error => dispatch(errorSendingData(error)));
 };
