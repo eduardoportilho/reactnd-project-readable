@@ -4,7 +4,8 @@ import {
   getPostsFromCategory,
   getPost,
   getPostComments,
-  addNewPost
+  addNewPost,
+  addComment
 } from "../utils/PostsAPI";
 
 export const DATA_FETCHING_STARTED = "DATA_FETCHING_STARTED";
@@ -114,6 +115,13 @@ export const fetchCategories = () => dispatch => {
 export const savePost = post => dispatch => {
   dispatch(dataSendingStarted());
   addNewPost(post)
+    .then(() => dispatch(dataSendingCompleted()))
+    .catch(error => dispatch(errorSendingData(error)));
+};
+
+export const saveComment = comment => dispatch => {
+  dispatch(dataSendingStarted());
+  addComment(comment)
     .then(() => dispatch(dataSendingCompleted()))
     .catch(error => dispatch(errorSendingData(error)));
 };

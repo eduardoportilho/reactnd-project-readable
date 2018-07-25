@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { fetchPost } from "../actions";
+import { fetchPost, saveComment } from "../actions";
 import PostPage from "../components/PostPage";
 
 class HomePageContainer extends Component {
@@ -8,19 +8,42 @@ class HomePageContainer extends Component {
     const {
       match: {
         params: { postId }
-      }
+      },
+      fetchPost
     } = this.props;
-    this.props.fetchPost(postId);
+    fetchPost(postId);
   }
 
   render() {
-    const { isLoading, errorFetchingData, post, comments } = this.props;
+    const {
+      match: {
+        params: { postId }
+      },
+      isLoading,
+      isSendingData,
+      isDataSendingCompleted,
+      errorFetchingData,
+      errorSendingData,
+      post,
+      comments,
+      saveComment,
+      fetchPost
+    } = this.props;
+
+    // Comment saved, update post data
+    if (isDataSendingCompleted) {
+      fetchPost(postId);
+    }
+
     return (
       <PostPage
         isLoading={isLoading}
+        isSendingData={isSendingData}
         errorFetchingData={errorFetchingData}
+        errorSendingData={errorSendingData}
         post={post}
         comments={comments}
+        saveComment={saveComment}
       />
     );
   }
@@ -28,13 +51,17 @@ class HomePageContainer extends Component {
 
 const mapStateToProps = state => ({
   isLoading: state.postData.isLoading,
+  isSendingData: state.postData.isSendingData,
+  isDataSendingCompleted: state.postData.isDataSendingCompleted,
   errorFetchingData: state.postData.errorFetchingData,
+  errorSendingData: state.postData.errorSendingData,
   post: state.postData.post,
   comments: state.postData.comments
 });
 
 const mapDispatchToProps = dispatch => ({
-  fetchPost: postId => dispatch(fetchPost(postId))
+  fetchPost: postId => dispatch(fetchPost(postId)),
+  saveComment: comment => dispatch(saveComment(comment))
 });
 
 export default connect(

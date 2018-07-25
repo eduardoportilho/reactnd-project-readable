@@ -1,20 +1,13 @@
 import React, { Component } from "react";
 import { Link, Redirect } from "react-router-dom";
 import uuidv1 from "uuid/v1";
-
-const AUTHORS = [
-  "Binx Bolling",
-  "Patrick Bateman",
-  "Inigo Montoya",
-  "Jay Gatsby",
-  "Benno van Archimboldi"
-];
+import AuthorPicker from "./AuthorPicker";
 
 class NewPostPage extends Component {
   state = {
     title: "",
     body: "",
-    author: AUTHORS[0],
+    author: "",
     categoryPath: ""
   };
 
@@ -22,8 +15,8 @@ class NewPostPage extends Component {
     this.setState({ title: event.target.value });
   };
 
-  handleAuthorChange = event => {
-    this.setState({ author: event.target.value });
+  handleAuthorChange = author => {
+    this.setState({ author });
   };
 
   handleCategoryChange = event => {
@@ -49,7 +42,7 @@ class NewPostPage extends Component {
   };
 
   render() {
-    const { title, body, author, categoryPath } = this.state;
+    const { title, body, categoryPath } = this.state;
     const {
       isLoading,
       isSendingData,
@@ -82,16 +75,7 @@ class NewPostPage extends Component {
                 />
               </label>
 
-              <label>
-                Author:
-                <select value={author} onChange={this.handleAuthorChange}>
-                  {AUTHORS.map(anAuthor => (
-                    <option key={anAuthor} value={anAuthor}>
-                      {anAuthor}
-                    </option>
-                  ))}
-                </select>
-              </label>
+              <AuthorPicker onAuthorChange={this.handleAuthorChange} />
 
               <label>
                 Category:
