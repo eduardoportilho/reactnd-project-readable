@@ -19,9 +19,7 @@ function postData(state = INITIAL_STATE, action) {
     case DATA_FETCHING_STARTED:
       return {
         ...INITIAL_STATE,
-        isLoading: true,
-        categories: state.categories,
-        posts: state.posts
+        isLoading: true
       };
     case ERROR_FETCHING_DATA:
       return {
@@ -37,9 +35,8 @@ function postData(state = INITIAL_STATE, action) {
     case CATEGORY_POSTS_FETCHED:
       return {
         ...INITIAL_STATE,
-        postsFromCategory: action.posts,
-        categories: state.categories,
-        posts: state.posts
+        postsFromCategory: action.postsFromCategory,
+        categories: action.categories
       };
     default:
       return state;

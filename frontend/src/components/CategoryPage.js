@@ -6,23 +6,29 @@ const CategoryPage = ({
   errorFetchingData,
   categories,
   postsFromCategory
-}) => (
-  <div>
-    {errorFetchingData && <div>Error: {errorFetchingData} </div>}
-    {isLoading ? (
-      <div>Loading...</div>
-    ) : (
-      <div>
-        <h1>Category: {categories.find(c => c.path === categoryPath).name}</h1>
+}) => {
+  const pageCategory =
+    categories && categories.find(c => c.path === categoryPath);
+  return (
+    <div>
+      {errorFetchingData && <div>Error: {errorFetchingData} </div>}
+      {isLoading ? (
+        <div>Loading...</div>
+      ) : (
         <div>
-          <h2>Posts</h2>
-          <ul>
-            {postsFromCategory.map(post => <li key={post.id}>{post.title}</li>)}
-          </ul>
+          <h1>Category: {pageCategory && pageCategory.name}</h1>
+          <div>
+            <h2>Posts</h2>
+            <ul>
+              {postsFromCategory.map(post => (
+                <li key={post.id}>{post.title}</li>
+              ))}
+            </ul>
+          </div>
         </div>
-      </div>
-    )}
-  </div>
-);
+      )}
+    </div>
+  );
+};
 
 export default CategoryPage;

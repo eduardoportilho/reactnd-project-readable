@@ -29,10 +29,11 @@ function initialDataFetched(categories, posts) {
 }
 
 export const CATEGORY_POSTS_FETCHED = "CATEGORY_POSTS_FETCHED";
-function categoryPostsFetched(posts) {
+function categoryPostsFetched(categories, postsFromCategory) {
   return {
     type: CATEGORY_POSTS_FETCHED,
-    posts
+    categories,
+    postsFromCategory
   };
 }
 
@@ -47,7 +48,9 @@ export const fetchInitialData = () => dispatch => {
 
 export const fetchPostsFromCategory = categoryPath => dispatch => {
   dispatch(dataFetchingStarted());
-  getPostsFromCategory(categoryPath)
-    .then(posts => dispatch(categoryPostsFetched(posts)))
+  Promise.all([getCategories(), getPostsFromCategory(categoryPath)])
+    .then(([categories, postsFromCategory]) =>
+      dispatch(categoryPostsFetched(categories, postsFromCategory))
+    )
     .catch(error => dispatch(errorFetchingData(error)));
 };
