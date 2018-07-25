@@ -14,12 +14,13 @@ class HomePageContainer extends Component {
   }
 
   render() {
-    const { isLoading, errorFetchingData, post } = this.props;
+    const { isLoading, errorFetchingData, post, comments } = this.props;
     return (
       <PostPage
         isLoading={isLoading}
         errorFetchingData={errorFetchingData}
         post={post}
+        comments={comments}
       />
     );
   }
@@ -28,7 +29,8 @@ class HomePageContainer extends Component {
 const mapStateToProps = state => ({
   isLoading: state.postData.isLoading,
   errorFetchingData: state.postData.errorFetchingData,
-  post: state.postData.post
+  post: state.postData.post,
+  comments: state.postData.comments
 });
 
 const mapDispatchToProps = dispatch => ({

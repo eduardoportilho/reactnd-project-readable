@@ -13,7 +13,8 @@ const INITIAL_STATE = {
   categories: [],
   posts: [],
   postsFromCategory: [],
-  post: undefined
+  post: undefined,
+  comments: []
 };
 
 function postData(state = INITIAL_STATE, action) {
@@ -43,7 +44,8 @@ function postData(state = INITIAL_STATE, action) {
     case POST_FETCHED:
       return {
         ...INITIAL_STATE,
-        post: action.post
+        post: action.post,
+        comments: action.comments
       };
     default:
       return state;
