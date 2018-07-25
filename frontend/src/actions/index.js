@@ -1,4 +1,4 @@
-import { getCategories } from "../utils/PostsAPI";
+import { getCategories, getAllPosts } from "../utils/PostsAPI";
 
 export const INITIAL_DATA_FETCHING_STARTED = "INITIAL_DATA_FETCHING_STARTED";
 function initialDataFetchingStarted() {
@@ -8,10 +8,11 @@ function initialDataFetchingStarted() {
 }
 
 export const INITIAL_DATA_FETCHED = "INITIAL_DATA_FETCHED";
-function initialDataFetched(categories) {
+function initialDataFetched(categories, posts) {
   return {
     type: INITIAL_DATA_FETCHED,
-    categories
+    categories,
+    posts
   };
 }
 
@@ -24,7 +25,9 @@ function errorFetchingData(error) {
 }
 export const fetchInitialData = () => dispatch => {
   dispatch(initialDataFetchingStarted());
-  getCategories()
-    .then(categories => dispatch(initialDataFetched(categories)))
+  Promise.all([getCategories(), getAllPosts()])
+    .then(([categories, posts]) =>
+      dispatch(initialDataFetched(categories, posts))
+    )
     .catch(error => dispatch(errorFetchingData(error)));
 };

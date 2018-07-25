@@ -9,7 +9,8 @@ function postData(
   state = {
     isLoading: false,
     errorFetchingData: undefined,
-    categories: []
+    categories: [],
+    posts: []
   },
   action
 ) {
@@ -18,19 +19,22 @@ function postData(
       return Object.assign({}, state, {
         isLoading: true,
         errorFetchingData: undefined,
-        categories: []
+        categories: [],
+        posts: []
       });
     case INITIAL_DATA_FETCHED:
       return Object.assign({}, state, {
         isLoading: false,
         errorFetchingData: undefined,
-        categories: action.categories
+        categories: action.categories,
+        posts: action.posts
       });
     case ERROR_FETCHING_DATA:
       return Object.assign({}, state, {
         isLoading: false,
         errorFetchingData: action.error,
-        categories: []
+        categories: [],
+        posts: []
       });
     default:
       return state;
