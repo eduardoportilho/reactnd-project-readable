@@ -97,16 +97,11 @@ class EditPostPage extends Component {
             <AuthorPicker
               defaultValue={author}
               onAuthorChange={this.handleAuthorChange}
-              disabled={isEditingPost}
             />
 
             <label>
               Category:
-              <select
-                value={categoryPath}
-                onChange={this.handleCategoryChange}
-                disabled={isEditingPost}
-              >
+              <select value={categoryPath} onChange={this.handleCategoryChange}>
                 <option value="" disabled>
                   Select one
                 </option>
