@@ -4,24 +4,28 @@ import {
   DATA_SENDING_STARTED,
   ERROR_FETCHING_DATA,
   ERROR_SENDING_DATA,
-  DATA_SENDING_COMPLETED,
   INITIAL_DATA_FETCHED,
   CATEGORY_POSTS_FETCHED,
   POST_FETCHED,
-  CATEGORIES_FETCHED
+  CATEGORIES_FETCHED,
+  POST_SAVED,
+  COMMENT_SAVED,
+  POST_DELETED
 } from "../actions";
 
 const INITIAL_STATE = {
   isLoading: false,
   isSendingData: false,
-  isDataSendingCompleted: false,
   errorFetchingData: undefined,
   errorSendingData: undefined,
   categories: [],
   posts: [],
   postsFromCategory: [],
   post: undefined,
-  comments: []
+  comments: [],
+  savedPost: undefined,
+  savedComment: undefined,
+  isPostDeleted: false
 };
 
 function postData(state = INITIAL_STATE, action) {
@@ -46,11 +50,7 @@ function postData(state = INITIAL_STATE, action) {
         ...INITIAL_STATE,
         errorSendingData: action.error
       };
-    case DATA_SENDING_COMPLETED:
-      return {
-        ...INITIAL_STATE,
-        isDataSendingCompleted: true
-      };
+
     case INITIAL_DATA_FETCHED:
       return {
         ...INITIAL_STATE,
@@ -74,6 +74,21 @@ function postData(state = INITIAL_STATE, action) {
       return {
         ...INITIAL_STATE,
         categories: action.categories
+      };
+    case POST_SAVED:
+      return {
+        ...INITIAL_STATE,
+        savedPost: action.post
+      };
+    case COMMENT_SAVED:
+      return {
+        ...INITIAL_STATE,
+        savedComment: action.comment
+      };
+    case POST_DELETED:
+      return {
+        ...INITIAL_STATE,
+        isPostDeleted: true
       };
     default:
       return state;

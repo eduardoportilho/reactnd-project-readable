@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Link, Redirect } from "react-router-dom";
 import AuthorPicker from "./AuthorPicker";
 
-const NOT_EMPTY_REGEXP = /[a-z]+/gi;
+const NOT_EMPTY_REGEXP = /[\w]+/gi;
 
 class EditPostPage extends Component {
   state = {
@@ -62,12 +62,12 @@ class EditPostPage extends Component {
       isSendingData,
       errorFetchingData,
       errorSendingData,
-      isDataSendingCompleted,
+      isEditCompleted,
       editedPost,
       categories
     } = this.props;
 
-    if (isDataSendingCompleted) {
+    if (isEditCompleted) {
       return <Redirect to="/" />;
     }
 

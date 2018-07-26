@@ -15,9 +15,9 @@ class NewPostPageContainer extends Component {
       isSendingData,
       errorFetchingData,
       errorSendingData,
-      isDataSendingCompleted,
       categories,
-      savePost
+      savePost,
+      savedPost
     } = this.props;
 
     const savePostWithGeneratedId = post => {
@@ -26,12 +26,12 @@ class NewPostPageContainer extends Component {
         ...post
       });
     };
-
+    const isEditCompleted = savedPost !== undefined;
     return (
       <EditPostPage
         isLoading={isLoading}
         isSendingData={isSendingData}
-        isDataSendingCompleted={isDataSendingCompleted}
+        isEditCompleted={isEditCompleted}
         errorFetchingData={errorFetchingData}
         errorSendingData={errorSendingData}
         categories={categories}
@@ -46,8 +46,8 @@ const mapStateToProps = state => ({
   isSendingData: state.postData.isSendingData,
   errorFetchingData: state.postData.errorFetchingData,
   errorSendingData: state.postData.errorSendingData,
-  isDataSendingCompleted: state.postData.isDataSendingCompleted,
-  categories: state.postData.categories
+  categories: state.postData.categories,
+  savedPost: state.postData.savedPost
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -23,13 +23,14 @@ class EditPostPageContainer extends Component {
       isSendingData,
       errorFetchingData,
       errorSendingData,
-      isDataSendingCompleted,
       categories,
       post,
-      updatePost
+      updatePost,
+      savedPost
     } = this.props;
 
     const updatePostWithId = updatedPost => updatePost(postId, updatedPost);
+    const isEditCompleted = savedPost !== undefined;
 
     // Using the "Fully uncontrolled component with a key" approach to reset the form content when the post is fetched.
     // https://reactjs.org/blog/2018/06/07/you-probably-dont-need-derived-state.html#recommendation-fully-uncontrolled-component-with-a-key
@@ -40,7 +41,7 @@ class EditPostPageContainer extends Component {
         key={pageKey}
         isLoading={isLoading}
         isSendingData={isSendingData}
-        isDataSendingCompleted={isDataSendingCompleted}
+        isEditCompleted={isEditCompleted}
         errorFetchingData={errorFetchingData}
         errorSendingData={errorSendingData}
         categories={categories}
@@ -56,9 +57,9 @@ const mapStateToProps = state => ({
   isSendingData: state.postData.isSendingData,
   errorFetchingData: state.postData.errorFetchingData,
   errorSendingData: state.postData.errorSendingData,
-  isDataSendingCompleted: state.postData.isDataSendingCompleted,
   post: state.postData.post,
-  categories: state.postData.categories
+  categories: state.postData.categories,
+  savedPost: state.postData.savedPost
 });
 
 const mapDispatchToProps = dispatch => ({

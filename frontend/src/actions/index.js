@@ -6,6 +6,7 @@ import {
   getPostComments,
   addNewPost,
   updatePost as updatePostAPI,
+  deletePost as deletePostAPI,
   addComment
 } from "../utils/PostsAPI";
 
@@ -36,13 +37,6 @@ function errorSendingData(error) {
   return {
     type: ERROR_SENDING_DATA,
     error
-  };
-}
-
-export const DATA_SENDING_COMPLETED = "DATA_SENDING_COMPLETED";
-function dataSendingCompleted() {
-  return {
-    type: DATA_SENDING_COMPLETED
   };
 }
 
@@ -79,6 +73,29 @@ function categoriesFetched(categories) {
   return {
     type: CATEGORIES_FETCHED,
     categories
+  };
+}
+
+export const POST_SAVED = "POST_SAVED";
+function postSaved(post) {
+  return {
+    type: POST_SAVED,
+    post
+  };
+}
+
+export const COMMENT_SAVED = "COMMENT_SAVED";
+function commentSaved(comment) {
+  return {
+    type: COMMENT_SAVED,
+    comment
+  };
+}
+
+export const POST_DELETED = "POST_DELETED";
+function postDeleted() {
+  return {
+    type: POST_DELETED
   };
 }
 
@@ -121,20 +138,27 @@ export const fetchCategories = () => dispatch => {
 export const savePost = post => dispatch => {
   dispatch(dataSendingStarted());
   addNewPost(post)
-    .then(() => dispatch(dataSendingCompleted()))
+    .then(post => dispatch(postSaved(post)))
     .catch(error => dispatch(errorSendingData(error)));
 };
 
 export const updatePost = (id, post) => dispatch => {
   dispatch(dataSendingStarted());
   updatePostAPI(id, post)
-    .then(() => dispatch(dataSendingCompleted()))
+    .then(() => dispatch(postSaved()))
+    .catch(error => dispatch(errorSendingData(error)));
+};
+
+export const deletePost = id => dispatch => {
+  dispatch(dataSendingStarted());
+  deletePostAPI(id)
+    .then(() => dispatch(postDeleted()))
     .catch(error => dispatch(errorSendingData(error)));
 };
 
 export const saveComment = comment => dispatch => {
   dispatch(dataSendingStarted());
   addComment(comment)
-    .then(() => dispatch(dataSendingCompleted()))
+    .then(comment => dispatch(commentSaved(comment)))
     .catch(error => dispatch(errorSendingData(error)));
 };

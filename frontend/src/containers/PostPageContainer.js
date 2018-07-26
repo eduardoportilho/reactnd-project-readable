@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { fetchPost, saveComment } from "../actions";
+import { fetchPost, deletePost, saveComment } from "../actions";
 import PostPage from "../components/PostPage";
 
 class HomePageContainer extends Component {
@@ -21,17 +21,17 @@ class HomePageContainer extends Component {
       },
       isLoading,
       isSendingData,
-      isDataSendingCompleted,
       errorFetchingData,
       errorSendingData,
       post,
       comments,
       saveComment,
-      fetchPost
+      fetchPost,
+      savedComment
     } = this.props;
 
     // Comment saved, update post data
-    if (isDataSendingCompleted) {
+    if (savedComment) {
       fetchPost(postId);
     }
 
@@ -52,11 +52,11 @@ class HomePageContainer extends Component {
 const mapStateToProps = state => ({
   isLoading: state.postData.isLoading,
   isSendingData: state.postData.isSendingData,
-  isDataSendingCompleted: state.postData.isDataSendingCompleted,
   errorFetchingData: state.postData.errorFetchingData,
   errorSendingData: state.postData.errorSendingData,
   post: state.postData.post,
-  comments: state.postData.comments
+  comments: state.postData.comments,
+  savedComment: state.postData.savedComment
 });
 
 const mapDispatchToProps = dispatch => ({
