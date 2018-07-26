@@ -40,17 +40,20 @@ class HomePageContainer extends Component {
       comments,
       saveComment,
       deletePost,
+      savedComment,
       isPostDeleted
     } = this.props;
 
     if (isPostDeleted) {
       return <Redirect to="/" />;
     }
+    const isCommentSaved = savedComment !== null;
 
     return (
       <PostPage
         isLoading={isLoading}
         isSendingData={isSendingData}
+        isCommentSaved={isCommentSaved}
         errorFetchingData={errorFetchingData}
         errorSendingData={errorSendingData}
         post={post}

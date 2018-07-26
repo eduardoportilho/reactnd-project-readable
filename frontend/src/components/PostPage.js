@@ -1,25 +1,10 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import uuidv1 from "uuid/v1";
-import AuthorPicker from "./AuthorPicker";
+import NewComment from "./NewComment";
 
 class PostPage extends Component {
-  state = {
-    commentBody: "",
-    commentAuthor: ""
-  };
-
-  handleCommentBodyChange = event => {
-    this.setState({ commentBody: event.target.value });
-  };
-
-  handleCommentAuthorChange = commentAuthor => {
-    this.setState({ commentAuthor });
-  };
-
-  handleCommentSubmit = event => {
-    event.preventDefault();
-    const { commentBody, commentAuthor } = this.state;
+  onCommentSave = (commentBody, commentAuthor) => {
     const { saveComment, post } = this.props;
     saveComment({
       parentId: post.id,
@@ -27,10 +12,6 @@ class PostPage extends Component {
       timestamp: Date.now(),
       body: commentBody,
       author: commentAuthor
-    });
-    this.setState({
-      commentBody: "",
-      commentAuthor: ""
     });
   };
 
@@ -43,12 +24,12 @@ class PostPage extends Component {
     const {
       isLoading,
       isSendingData,
+      isCommentSaved,
       errorFetchingData,
       errorSendingData,
       post,
       comments
     } = this.props;
-    const { commentBody } = this.state;
 
     if (isLoading || isSendingData || !post) {
       return <div>Loading...</div>;
@@ -79,24 +60,10 @@ class PostPage extends Component {
             ) : (
               <div>None so far...</div>
             )}
-            <div>
-              <form>
-                <label>
-                  Add a new comment:
-                  <textarea
-                    value={commentBody}
-                    onChange={this.handleCommentBodyChange}
-                  />
-                </label>
-
-                <AuthorPicker onAuthorChange={this.handleCommentAuthorChange} />
-                <input
-                  type="submit"
-                  value="Comment"
-                  onClick={this.handleCommentSubmit}
-                />
-              </form>
-            </div>
+            <NewComment
+              onCommentSave={this.onCommentSave}
+              resetCommentData={isCommentSaved}
+            />
           </div>
           <hr />
           <Link to="/">Home</Link>
