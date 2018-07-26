@@ -2,14 +2,14 @@ import React, { Component } from "react";
 import { Link, Redirect } from "react-router-dom";
 import AuthorPicker from "./AuthorPicker";
 
+const NOT_EMPTY_REGEXP = /[a-z]+/gi;
+
 class EditPostPage extends Component {
   state = {
     title: this.props.editedPost ? this.props.editedPost.title : "",
     body: this.props.editedPost ? this.props.editedPost.body : "",
     author: this.props.editedPost ? this.props.editedPost.author : "",
-    categoryPath: this.props.editedPost
-      ? this.props.editedPost.category.path
-      : ""
+    categoryPath: this.props.editedPost ? this.props.editedPost.category : ""
   };
 
   handleTitleChange = event => {
@@ -41,6 +41,20 @@ class EditPostPage extends Component {
     });
   };
 
+  isValidPost = () => {
+    const { title, body, author, categoryPath } = this.state;
+    return (
+      title &&
+      title.match(NOT_EMPTY_REGEXP) &&
+      body &&
+      body.match(NOT_EMPTY_REGEXP) &&
+      author &&
+      author.match(NOT_EMPTY_REGEXP) &&
+      categoryPath &&
+      categoryPath.match(NOT_EMPTY_REGEXP)
+    );
+  };
+
   render() {
     const { title, body, author, categoryPath } = this.state;
     const {
@@ -57,65 +71,67 @@ class EditPostPage extends Component {
       return <Redirect to="/" />;
     }
 
+    if (isLoading || isSendingData) {
+      return <div>Loading...</div>;
+    }
+
     const isEditingPost = editedPost !== undefined;
+    const isSubmitDisabled = !this.isValidPost();
 
     return (
       <div>
         {errorFetchingData && <div>Error: {errorFetchingData} </div>}
         {errorSendingData && <div>Error: {errorSendingData} </div>}
-        {isLoading || isSendingData ? (
-          <div>Loading...</div>
-        ) : (
-          <div>
-            <h1>New Post</h1>
-            <form>
-              <label>
-                Title:
-                <input
-                  type="text"
-                  value={title}
-                  onChange={this.handleTitleChange}
-                />
-              </label>
-
-              <AuthorPicker
-                defaultValue={author}
-                onAuthorChange={this.handleAuthorChange}
-                disabled={isEditingPost}
-              />
-
-              <label>
-                Category:
-                <select
-                  value={categoryPath}
-                  onChange={this.handleCategoryChange}
-                  disabled={isEditingPost}
-                >
-                  <option value="" disabled>
-                    Select one
-                  </option>
-                  {categories.map(aCategory => (
-                    <option key={aCategory.path} value={aCategory.path}>
-                      {aCategory.name}
-                    </option>
-                  ))}
-                </select>
-              </label>
-
-              <label>
-                Content:
-                <textarea value={body} onChange={this.handleBodyChange} />
-              </label>
-
+        <div>
+          <h1>New Post</h1>
+          <form>
+            <label>
+              Title:
               <input
-                type="submit"
-                value={isEditingPost ? "Update" : "Create"}
-                onClick={this.handlePostSubmit}
+                type="text"
+                value={title}
+                onChange={this.handleTitleChange}
               />
-            </form>
-            <Link to="/">Home</Link>
-          </div>
-        )}
+            </label>
+
+            <AuthorPicker
+              defaultValue={author}
+              onAuthorChange={this.handleAuthorChange}
+              disabled={isEditingPost}
+            />
+
+            <label>
+              Category:
+              <select
+                value={categoryPath}
+                onChange={this.handleCategoryChange}
+                disabled={isEditingPost}
+              >
+                <option value="" disabled>
+                  Select one
+                </option>
+                {categories.map(aCategory => (
+                  <option key={aCategory.path} value={aCategory.path}>
+                    {aCategory.name}
+                  </option>
+                ))}
+              </select>
+            </label>
+
+            <label>
+              Content:
+              <textarea value={body} onChange={this.handleBodyChange} />
+            </label>
+
+            <input
+              type="submit"
+              value={isEditingPost ? "Update" : "Create"}
+              onClick={this.handlePostSubmit}
+              disabled={isSubmitDisabled}
+            />
+          </form>
+          <Link to="/">Home</Link>
+        </div>
       </div>
     );
   }
