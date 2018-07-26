@@ -10,7 +10,7 @@ const AUTHORS = [
 
 class AuthorPicker extends Component {
   state = {
-    author: ""
+    author: this.props.defaultValue || ""
   };
 
   handleAuthorChange = event => {
@@ -20,11 +20,16 @@ class AuthorPicker extends Component {
   };
 
   render() {
+    const { disabled } = this.props;
     const { author } = this.state;
     return (
       <label>
         Author:
-        <select value={author} onChange={this.handleAuthorChange}>
+        <select
+          value={author}
+          onChange={this.handleAuthorChange}
+          disabled={!!disabled}
+        >
           <option value="" disabled>
             Select one
           </option>

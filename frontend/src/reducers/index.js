@@ -67,7 +67,8 @@ function postData(state = INITIAL_STATE, action) {
       return {
         ...INITIAL_STATE,
         post: action.post,
-        comments: action.comments
+        comments: action.comments,
+        categories: action.categories
       };
     case CATEGORIES_FETCHED:
       return {

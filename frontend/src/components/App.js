@@ -4,6 +4,7 @@ import HomePageContainer from "../containers/HomePageContainer";
 import CategoryPageContainer from "../containers/CategoryPageContainer";
 import PostPageContainer from "../containers/PostPageContainer";
 import NewPostPageContainer from "../containers/NewPostPageContainer";
+import EditPostPageContainer from "../containers/EditPostPageContainer";
 import RouteNotFound from "../components/RouteNotFound";
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
           component={CategoryPageContainer}
         />
         <Route path="/post/:postId" component={PostPageContainer} />
+        <Route path="/edit-post/:postId" component={EditPostPageContainer} />
         <Route path="/new-post" component={NewPostPageContainer} />
         <Route component={RouteNotFound} />
       </Switch>

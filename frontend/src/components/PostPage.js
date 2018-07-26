@@ -87,6 +87,7 @@ class PostPage extends Component {
             </div>
             <hr />
             <Link to="/">Home</Link>
+            <Link to={`/edit-post/${post.id}`}>Edit</Link>
           </div>
         )}
       </div>

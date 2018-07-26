@@ -1,14 +1,15 @@
 import React, { Component } from "react";
 import { Link, Redirect } from "react-router-dom";
-import uuidv1 from "uuid/v1";
 import AuthorPicker from "./AuthorPicker";
 
-class NewPostPage extends Component {
+class EditPostPage extends Component {
   state = {
-    title: "",
-    body: "",
-    author: "",
-    categoryPath: ""
+    title: this.props.editedPost ? this.props.editedPost.title : "",
+    body: this.props.editedPost ? this.props.editedPost.body : "",
+    author: this.props.editedPost ? this.props.editedPost.author : "",
+    categoryPath: this.props.editedPost
+      ? this.props.editedPost.category.path
+      : ""
   };
 
   handleTitleChange = event => {
@@ -32,7 +33,6 @@ class NewPostPage extends Component {
     const { title, body, author, categoryPath } = this.state;
     const { savePost } = this.props;
     savePost({
-      id: uuidv1(),
       timestamp: Date.now(),
       title,
       body,
@@ -42,19 +42,22 @@ class NewPostPage extends Component {
   };
 
   render() {
-    const { title, body, categoryPath } = this.state;
+    const { title, body, author, categoryPath } = this.state;
     const {
       isLoading,
       isSendingData,
       errorFetchingData,
       errorSendingData,
       isDataSendingCompleted,
+      editedPost,
       categories
     } = this.props;
 
     if (isDataSendingCompleted) {
       return <Redirect to="/" />;
     }
+
+    const isEditingPost = editedPost !== undefined;
 
     return (
       <div>
@@ -75,13 +78,18 @@ class NewPostPage extends Component {
                 />
               </label>
 
-              <AuthorPicker onAuthorChange={this.handleAuthorChange} />
+              <AuthorPicker
+                defaultValue={author}
+                onAuthorChange={this.handleAuthorChange}
+                disabled={isEditingPost}
+              />
 
               <label>
                 Category:
                 <select
                   value={categoryPath}
                   onChange={this.handleCategoryChange}
+                  disabled={isEditingPost}
                 >
                   <option value="" disabled>
                     Select one
@@ -101,7 +109,7 @@ class NewPostPage extends Component {
 
               <input
                 type="submit"
-                value="Create"
+                value={isEditingPost ? "Update" : "Create"}
                 onClick={this.handlePostSubmit}
               />
             </form>
@@ -113,4 +121,4 @@ class NewPostPage extends Component {
   }
 }
 
-export default NewPostPage;
+export default EditPostPage;

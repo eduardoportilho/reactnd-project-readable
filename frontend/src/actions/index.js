@@ -5,6 +5,7 @@ import {
   getPost,
   getPostComments,
   addNewPost,
+  updatePost as updatePostAPI,
   addComment
 } from "../utils/PostsAPI";
 
@@ -64,11 +65,12 @@ function categoryPostsFetched(categories, postsFromCategory) {
 }
 
 export const POST_FETCHED = "POST_FETCHED";
-function postFetched(post, comments) {
+function postFetched(post, comments, categories) {
   return {
     type: POST_FETCHED,
     post,
-    comments
+    comments,
+    categories
   };
 }
 
@@ -91,6 +93,7 @@ export const fetchInitialData = () => dispatch => {
 
 export const fetchPostsFromCategory = categoryPath => dispatch => {
   dispatch(dataFetchingStarted());
+  // Fetching the list of categories is necessary to get the category name
   Promise.all([getCategories(), getPostsFromCategory(categoryPath)])
     .then(([categories, postsFromCategory]) =>
       dispatch(categoryPostsFetched(categories, postsFromCategory))
@@ -100,8 +103,11 @@ export const fetchPostsFromCategory = categoryPath => dispatch => {
 
 export const fetchPost = postId => dispatch => {
   dispatch(dataFetchingStarted());
-  Promise.all([getPost(postId), getPostComments(postId)])
-    .then(([post, comments]) => dispatch(postFetched(post, comments)))
+  // Fetching the list of categories is necessary to be able to edit the post
+  Promise.all([getPost(postId), getPostComments(postId), getCategories()])
+    .then(([post, comments, categories]) =>
+      dispatch(postFetched(post, comments, categories))
+    )
     .catch(error => dispatch(errorFetchingData(error)));
 };
 
@@ -115,6 +121,13 @@ export const fetchCategories = () => dispatch => {
 export const savePost = post => dispatch => {
   dispatch(dataSendingStarted());
   addNewPost(post)
+    .then(() => dispatch(dataSendingCompleted()))
+    .catch(error => dispatch(errorSendingData(error)));
+};
+
+export const updatePost = (id, post) => dispatch => {
+  dispatch(dataSendingStarted());
+  updatePostAPI(id, post)
     .then(() => dispatch(dataSendingCompleted()))
     .catch(error => dispatch(errorSendingData(error)));
 };
