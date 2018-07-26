@@ -27,7 +27,9 @@ class HomePageContainer extends Component {
       comments,
       saveComment,
       fetchPost,
-      savedComment
+      deletePost,
+      savedComment,
+      isPostDeleted
     } = this.props;
 
     // Comment saved, update post data
@@ -44,6 +46,8 @@ class HomePageContainer extends Component {
         post={post}
         comments={comments}
         saveComment={saveComment}
+        deletePost={deletePost}
+        isPostDeleted={isPostDeleted}
       />
     );
   }
@@ -56,11 +60,13 @@ const mapStateToProps = state => ({
   errorSendingData: state.postData.errorSendingData,
   post: state.postData.post,
   comments: state.postData.comments,
-  savedComment: state.postData.savedComment
+  savedComment: state.postData.savedComment,
+  isPostDeleted: state.postData.isPostDeleted
 });
 
 const mapDispatchToProps = dispatch => ({
   fetchPost: postId => dispatch(fetchPost(postId)),
+  deletePost: postId => dispatch(deletePost(postId)),
   saveComment: comment => dispatch(saveComment(comment))
 });
 

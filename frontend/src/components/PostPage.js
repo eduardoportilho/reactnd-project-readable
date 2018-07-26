@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import uuidv1 from "uuid/v1";
 import AuthorPicker from "./AuthorPicker";
 
@@ -34,62 +34,82 @@ class PostPage extends Component {
     });
   };
 
+  handleDeletePost = () => {
+    const { post, deletePost } = this.props;
+    deletePost(post.id);
+  };
+
   render() {
-    const { isLoading, errorFetchingData, post, comments } = this.props;
+    const {
+      isLoading,
+      isSendingData,
+      errorFetchingData,
+      errorSendingData,
+      post,
+      comments,
+      isPostDeleted
+    } = this.props;
     const { commentBody } = this.state;
+
+    if (isPostDeleted) {
+      return <Redirect to="/" />;
+    }
+
+    if (isLoading || isSendingData || !post) {
+      return <div>Loading...</div>;
+    }
+
     return (
       <div>
         {errorFetchingData && <div>Error: {errorFetchingData} </div>}
-        {isLoading || !post ? (
-          <div>Loading...</div>
-        ) : (
+        {errorSendingData && <div>Error: {errorSendingData} </div>}
+        <div>
+          <h1>{post.title}</h1>
+          <p>by {post.author}</p>
+          <p>at {post.timestamp}</p>
+          <p>{post.body}</p>
+          <p>Category: {post.category}</p>
+          <p>Votes: {post.voteScore}</p>
           <div>
-            <h1>{post.title}</h1>
-            <p>by {post.author}</p>
-            <p>at {post.timestamp}</p>
-            <p>{post.body}</p>
-            <p>Category: {post.category}</p>
-            <p>Votes: {post.voteScore}</p>
+            <h2>Comments:</h2>
+            {comments.length ? (
+              comments.map(comment => (
+                <div key={comment.id}>
+                  <p>{comment.body}</p>
+                  <p>by {comment.author}</p>
+                  <p>at {comment.timestamp}</p>
+                  <p>Votes: {comment.voteScore}</p>
+                </div>
+              ))
+            ) : (
+              <div>None so far...</div>
+            )}
             <div>
-              <h2>Comments:</h2>
-              {comments.length ? (
-                comments.map(comment => (
-                  <div key={comment.id}>
-                    <p>{comment.body}</p>
-                    <p>by {comment.author}</p>
-                    <p>at {comment.timestamp}</p>
-                    <p>Votes: {comment.voteScore}</p>
-                  </div>
-                ))
-              ) : (
-                <div>None so far...</div>
-              )}
-              <div>
-                <form>
-                  <label>
-                    Add a new comment:
-                    <textarea
-                      value={commentBody}
-                      onChange={this.handleCommentBodyChange}
-                    />
-                  </label>
+              <form>
+                <label>
+                  Add a new comment:
+                  <textarea
+                    value={commentBody}
+                    onChange={this.handleCommentBodyChange}
+                  />
+                </label>
 
-                  <AuthorPicker
-                    onAuthorChange={this.handleCommentAuthorChange}
-                  />
-                  <input
-                    type="submit"
-                    value="Comment"
-                    onClick={this.handleCommentSubmit}
-                  />
-                </form>
-              </div>
+                <AuthorPicker onAuthorChange={this.handleCommentAuthorChange} />
+                <input
+                  type="submit"
+                  value="Comment"
+                  onClick={this.handleCommentSubmit}
+                />
+              </form>
             </div>
-            <hr />
-            <Link to="/">Home</Link>
-            <Link to={`/edit-post/${post.id}`}>Edit</Link>
           </div>
-        )}
+          <hr />
+          <Link to="/">Home</Link>
+          <Link to={`/edit-post/${post.id}`}>Edit</Link>
+          <a href="#" onClick={this.handleDeletePost}>
+            Delete
+          </a>
+        </div>
       </div>
     );
   }

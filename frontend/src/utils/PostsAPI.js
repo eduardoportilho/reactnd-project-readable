@@ -49,6 +49,12 @@ export const updatePost = (id, post) =>
     body: JSON.stringify(post)
   }).then(res => res.json());
 
+export const deletePost = id =>
+  fetch(`${api}/posts/${id}`, {
+    method: "DELETE",
+    headers
+  }).then(res => res.json());
+
 export const addComment = comment =>
   fetch(`${api}/comments`, {
     method: "POST",
