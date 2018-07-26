@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import uuidv1 from "uuid/v1";
+import { Redirect } from "react-router-dom";
 import { fetchCategories, savePost } from "../actions";
 import EditPostPage from "../components/EditPostPage";
 
@@ -26,12 +27,15 @@ class NewPostPageContainer extends Component {
         ...post
       });
     };
-    const isEditCompleted = savedPost !== undefined;
+    const isPostCreated = savedPost !== undefined;
+    if (isPostCreated) {
+      return <Redirect to={`/post/${savedPost.id}`} />;
+    }
+
     return (
       <EditPostPage
         isLoading={isLoading}
         isSendingData={isSendingData}
-        isEditCompleted={isEditCompleted}
         errorFetchingData={errorFetchingData}
         errorSendingData={errorSendingData}
         categories={categories}

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { Redirect } from "react-router-dom";
 import { fetchPost, updatePost } from "../actions";
 import EditPostPage from "../components/EditPostPage";
 
@@ -30,7 +31,11 @@ class EditPostPageContainer extends Component {
     } = this.props;
 
     const updatePostWithId = updatedPost => updatePost(postId, updatedPost);
+
     const isEditCompleted = savedPost !== undefined;
+    if (isEditCompleted) {
+      return <Redirect to={`/post/${postId}`} />;
+    }
 
     // Using the "Fully uncontrolled component with a key" approach to reset the form content when the post is fetched.
     // https://reactjs.org/blog/2018/06/07/you-probably-dont-need-derived-state.html#recommendation-fully-uncontrolled-component-with-a-key
@@ -41,7 +46,6 @@ class EditPostPageContainer extends Component {
         key={pageKey}
         isLoading={isLoading}
         isSendingData={isSendingData}
-        isEditCompleted={isEditCompleted}
         errorFetchingData={errorFetchingData}
         errorSendingData={errorSendingData}
         categories={categories}

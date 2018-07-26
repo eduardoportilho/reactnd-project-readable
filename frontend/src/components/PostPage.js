@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Link, Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 import uuidv1 from "uuid/v1";
 import AuthorPicker from "./AuthorPicker";
 
@@ -46,14 +46,9 @@ class PostPage extends Component {
       errorFetchingData,
       errorSendingData,
       post,
-      comments,
-      isPostDeleted
+      comments
     } = this.props;
     const { commentBody } = this.state;
-
-    if (isPostDeleted) {
-      return <Redirect to="/" />;
-    }
 
     if (isLoading || isSendingData || !post) {
       return <div>Loading...</div>;
@@ -106,9 +101,7 @@ class PostPage extends Component {
           <hr />
           <Link to="/">Home</Link>
           <Link to={`/edit-post/${post.id}`}>Edit</Link>
-          <a href="#" onClick={this.handleDeletePost}>
-            Delete
-          </a>
+          <button onClick={this.handleDeletePost}>Delete</button>
         </div>
       </div>
     );

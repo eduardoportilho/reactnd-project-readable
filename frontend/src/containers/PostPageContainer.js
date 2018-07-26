@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { Redirect } from "react-router-dom";
 import { fetchPost, deletePost, saveComment } from "../actions";
 import PostPage from "../components/PostPage";
 
@@ -14,11 +15,23 @@ class HomePageContainer extends Component {
     fetchPost(postId);
   }
 
-  render() {
+  componentDidUpdate = prevProps => {
     const {
       match: {
         params: { postId }
       },
+      fetchPost,
+      savedComment
+    } = this.props;
+
+    // Comment saved, update post data
+    if (savedComment && !prevProps.savedComment) {
+      fetchPost(postId);
+    }
+  };
+
+  render() {
+    const {
       isLoading,
       isSendingData,
       errorFetchingData,
@@ -26,15 +39,12 @@ class HomePageContainer extends Component {
       post,
       comments,
       saveComment,
-      fetchPost,
       deletePost,
-      savedComment,
       isPostDeleted
     } = this.props;
 
-    // Comment saved, update post data
-    if (savedComment) {
-      fetchPost(postId);
+    if (isPostDeleted) {
+      return <Redirect to="/" />;
     }
 
     return (
@@ -47,7 +57,6 @@ class HomePageContainer extends Component {
         comments={comments}
         saveComment={saveComment}
         deletePost={deletePost}
-        isPostDeleted={isPostDeleted}
       />
     );
   }

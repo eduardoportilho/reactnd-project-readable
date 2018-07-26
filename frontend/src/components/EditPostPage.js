@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Link, Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 import AuthorPicker from "./AuthorPicker";
 
 const NOT_EMPTY_REGEXP = /[\w]+/gi;
@@ -62,14 +62,9 @@ class EditPostPage extends Component {
       isSendingData,
       errorFetchingData,
       errorSendingData,
-      isEditCompleted,
       editedPost,
       categories
     } = this.props;
-
-    if (isEditCompleted) {
-      return <Redirect to="/" />;
-    }
 
     if (isLoading || isSendingData) {
       return <div>Loading...</div>;
@@ -83,7 +78,7 @@ class EditPostPage extends Component {
         {errorFetchingData && <div>Error: {errorFetchingData} </div>}
         {errorSendingData && <div>Error: {errorSendingData} </div>}
         <div>
-          <h1>New Post</h1>
+          <h1>{isEditingPost ? "Edit Post" : "New Post"}</h1>
           <form>
             <label>
               Title:

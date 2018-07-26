@@ -145,7 +145,7 @@ export const savePost = post => dispatch => {
 export const updatePost = (id, post) => dispatch => {
   dispatch(dataSendingStarted());
   updatePostAPI(id, post)
-    .then(() => dispatch(postSaved()))
+    .then(updatedPost => dispatch(postSaved(updatedPost)))
     .catch(error => dispatch(errorSendingData(error)));
 };
 
