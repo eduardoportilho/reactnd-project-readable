@@ -38,9 +38,9 @@ class NewPostPageContainer extends Component {
 }
 
 const mapStateToProps = state => ({
-  errorFetchingData: state.postData.errorFetchingData,
-  errorSendingData: state.postData.errorSendingData,
-  categories: state.postData.categories
+  errorFetchingData: state.common.errorFetchingData,
+  errorSendingData: state.common.errorSendingData,
+  categories: state.category.categories
 });
 
 const mapDispatchToProps = dispatch => ({

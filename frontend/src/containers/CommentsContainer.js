@@ -37,9 +37,9 @@ class CommentsContainer extends Component {
 }
 
 const mapStateToProps = (state, { postId }) => ({
-  errorFetchingData: state.postData.errorFetchingData,
-  errorSendingData: state.postData.errorSendingData,
-  comments: state.postData.postComments[postId]
+  errorFetchingData: state.common.errorFetchingData,
+  errorSendingData: state.common.errorSendingData,
+  comments: state.comment.postComments[postId]
 });
 
 const mapDispatchToProps = dispatch => ({

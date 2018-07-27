@@ -60,10 +60,10 @@ const mapStateToProps = (
     }
   }
 ) => ({
-  errorFetchingData: state.postData.errorFetchingData,
-  errorSendingData: state.postData.errorSendingData,
-  post: state.postData.posts.find(post => post.id === postId),
-  categories: state.postData.categories
+  errorFetchingData: state.common.errorFetchingData,
+  errorSendingData: state.common.errorSendingData,
+  post: state.post.posts.find(post => post.id === postId),
+  categories: state.category.categories
 });
 
 const mapDispatchToProps = dispatch => ({

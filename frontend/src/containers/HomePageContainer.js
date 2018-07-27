@@ -21,9 +21,9 @@ class HomePageContainer extends Component {
 }
 
 const mapStateToProps = state => ({
-  errorFetchingData: state.postData.errorFetchingData,
-  categories: state.postData.categories,
-  posts: state.postData.posts
+  errorFetchingData: state.common.errorFetchingData,
+  categories: state.category.categories,
+  posts: state.post.posts
 });
 
 const mapDispatchToProps = dispatch => ({

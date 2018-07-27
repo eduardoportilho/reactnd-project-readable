@@ -52,9 +52,9 @@ const mapStateToProps = (
     }
   }
 ) => ({
-  errorFetchingData: state.postData.errorFetchingData,
-  errorSendingData: state.postData.errorSendingData,
-  post: state.postData.posts.find(post => post.id === postId)
+  errorFetchingData: state.common.errorFetchingData,
+  errorSendingData: state.common.errorSendingData,
+  post: state.post.posts.find(post => post.id === postId)
 });
 
 const mapDispatchToProps = dispatch => ({

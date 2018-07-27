@@ -1,7 +1,6 @@
 import {
   getCategories,
   getAllPosts,
-  getPostsFromCategory,
   getPost,
   getPostComments,
   addNewPost,
@@ -26,21 +25,19 @@ function errorSendingData(error) {
   };
 }
 
-export const INITIAL_DATA_FETCHED = "INITIAL_DATA_FETCHED";
-function initialDataFetched(categories, posts) {
+export const POSTS_FETCHED = "POSTS_FETCHED";
+function postsFetched(posts) {
   return {
-    type: INITIAL_DATA_FETCHED,
-    categories,
+    type: POSTS_FETCHED,
     posts
   };
 }
 
 export const POST_FETCHED = "POST_FETCHED";
-function postFetched(post, categories) {
+function postFetched(post) {
   return {
     type: POST_FETCHED,
-    post,
-    categories
+    post
   };
 }
 
@@ -96,14 +93,22 @@ function postDeleted(postId) {
 export const fetchAllPosts = () => dispatch =>
   Promise.all([getCategories(), getAllPosts()])
     .then(([categories, posts]) =>
-      dispatch(initialDataFetched(categories, posts))
+      Promise.all([
+        dispatch(categoriesFetched(categories)),
+        dispatch(postsFetched(posts))
+      ])
     )
     .catch(error => dispatch(errorFetchingData(error)));
 
 export const fetchPost = postId => dispatch =>
   // Fetching the list of categories is necessary to be able to edit the post
   Promise.all([getPost(postId), getCategories()])
-    .then(([post, categories]) => dispatch(postFetched(post, categories)))
+    .then(([post, categories]) =>
+      Promise.all([
+        dispatch(categoriesFetched(categories)),
+        dispatch(postFetched(post))
+      ])
+    )
     .catch(error => dispatch(errorFetchingData(error)));
 
 export const fetchPostComments = postId => dispatch =>

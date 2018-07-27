@@ -35,9 +35,9 @@ const mapStateToProps = (
     }
   }
 ) => ({
-  errorFetchingData: state.postData.errorFetchingData,
-  categories: state.postData.categories,
-  postsFromCategory: state.postData.posts.filter(
+  errorFetchingData: state.common.errorFetchingData,
+  categories: state.category.categories,
+  postsFromCategory: state.post.posts.filter(
     post => post.category === categoryPath
   )
 });
