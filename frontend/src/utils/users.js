@@ -1,43 +1,43 @@
 export const USERS = [
   {
     name: "Jane Eyre",
-    avatar: "images/jane.jpg"
+    avatar: "/images/jane.jpg"
   },
   {
     name: "Binx Bolling",
-    avatar: "images/binx.jpg"
+    avatar: "/images/binx.jpg"
   },
   {
     name: "Veruca Salt",
-    avatar: "images/veruca.jpg"
+    avatar: "/images/veruca.jpg"
   },
   {
     name: "Jay Gatsby",
-    avatar: "images/jay.jpg"
+    avatar: "/images/jay.jpg"
   },
   {
     name: "Angela Argo",
-    avatar: "images/argo.jpg"
+    avatar: "/images/argo.jpg"
   },
   {
     name: "Eustacia Vye",
-    avatar: "images/vye.jpg"
+    avatar: "/images/vye.jpg"
   },
   {
     name: "Inigo Montoya",
-    avatar: "images/inigo.jpg"
+    avatar: "/images/inigo.jpg"
   },
   {
     name: "Ramona Quimby",
-    avatar: "images/ramona.png"
+    avatar: "/images/ramona.png"
   },
   {
     name: "thingone",
-    avatar: "images/thingone.png"
+    avatar: "/images/thingone.png"
   },
   {
     name: "thingtwo",
-    avatar: "images/thingtwo.jpg"
+    avatar: "/images/thingtwo.jpg"
   }
 ];
 

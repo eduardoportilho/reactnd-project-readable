@@ -1,7 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import { Container, Header } from "semantic-ui-react";
-
 import PageHeader from "./PageHeader";
 import CategoryList from "./CategoryList";
 import PostListContainer from "../containers/PostListContainer";
