@@ -1,69 +1,72 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import _ from "lodash";
+import { Segment, Dropdown, Header, Menu } from "semantic-ui-react";
 
 const SORT_OPTIONS = [
   {
-    label: "Title",
-    key: "title"
+    text: "Title",
+    value: "title"
   },
   {
-    label: "Vote Score",
-    key: "voteScore"
+    text: "Vote Score",
+    value: "voteScore"
   },
   {
-    label: "Creation time",
-    key: "timestamp"
+    text: "Creation time",
+    value: "timestamp"
   }
 ];
 
 class PostList extends Component {
   state = {
-    sortedPosts: [],
-    sortBy: ""
+    sortField: SORT_OPTIONS[0].value
   };
 
-  handleSortByChange = event => {
-    const sortKey = event.target.value;
-    const { posts } = this.props;
-    this.setState({
-      sortBy: sortKey,
-      sortedPosts: _.sortBy(posts, sortKey)
-    });
+  handleSortByChange = (event, data) => {
+    this.setState({ sortField: data.value });
   };
 
   render() {
     const { posts, votePostUp, votePostDown } = this.props;
-    const { sortBy, sortedPosts } = this.state;
-    const displayPosts = sortedPosts.length ? sortedPosts : posts;
+    const { sortField } = this.state;
+    const sortedPosts = _.sortBy(posts, sortField).reverse();
     return (
       <div>
-        <label>
-          Sort by:
-          <select value={sortBy} onChange={this.handleSortByChange}>
-            <option value="" disabled>
-              Select one
-            </option>
-            {SORT_OPTIONS.map(sortOption => (
-              <option key={sortOption.key} value={sortOption.key}>
-                {sortOption.label}
-              </option>
+        <Menu secondary attached="top">
+          <Menu.Item header>
+            <Header as="h2">Posts</Header>
+          </Menu.Item>
+
+          <Menu.Item position="right">
+            Sort by{" "}
+            <Dropdown
+              inline
+              className="inline-margin"
+              options={SORT_OPTIONS}
+              placeholder="..."
+              value={sortField}
+              onChange={this.handleSortByChange}
+            />
+          </Menu.Item>
+        </Menu>
+        <Segment attached>
+          <ul>
+            {sortedPosts.map(post => (
+              <li key={post.id}>
+                <Link to={`/post/${post.id}`}>{post.title}</Link>
+                <span>{post.commentCount} comments</span>
+                <span>
+                  Vote Score: {post.voteScore}
+                  <button onClick={() => votePostUp(post.id)}>Vote Up</button>
+                  <button onClick={() => votePostDown(post.id)}>
+                    Vote Down
+                  </button>
+                </span>
+              </li>
             ))}
-          </select>
-        </label>
-        <ul>
-          {displayPosts.map(post => (
-            <li key={post.id}>
-              <Link to={`/post/${post.id}`}>{post.title}</Link>
-              <span>{post.commentCount} comments</span>
-              <span>
-                Vote Score: {post.voteScore}
-                <button onClick={() => votePostUp(post.id)}>Vote Up</button>
-                <button onClick={() => votePostDown(post.id)}>Vote Down</button>
-              </span>
-            </li>
-          ))}
-        </ul>
+          </ul>
+        </Segment>
       </div>
     );
   }
