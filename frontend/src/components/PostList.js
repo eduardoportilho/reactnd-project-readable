@@ -1,7 +1,16 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import _ from "lodash";
-import { Segment, Dropdown, Header, Menu } from "semantic-ui-react";
+import {
+  Segment,
+  Dropdown,
+  Header,
+  Menu,
+  List,
+  Image,
+  Icon
+} from "semantic-ui-react";
+import { getAvatarURLFor } from "../utils/users";
 
 const SORT_OPTIONS = [
   {
@@ -51,9 +60,42 @@ class PostList extends Component {
           </Menu.Item>
         </Menu>
         <Segment attached>
-          <ul>
+          <List>
             {sortedPosts.map(post => (
-              <li key={post.id}>
+              <List.Item key={post.id}>
+                <Image avatar src={getAvatarURLFor(post.author)} />
+                <List.Content>
+                  <List.Header>
+                    <Link to={`/post/${post.id}`}>{post.title}</Link>
+                  </List.Header>
+                  <List.Description>
+                    <List horizontal relaxed>
+                      <List.Item>{post.commentCount} comments</List.Item>
+                      <List.Item>
+                        <span>Vote score: {post.voteScore}</span>
+                        <span className="inline-btns">
+                          <Icon
+                            link
+                            name="thumbs up outline"
+                            color="green"
+                            onClick={() => votePostUp(post.id)}
+                          />
+                          <Icon
+                            link
+                            name="thumbs down outline"
+                            color="red"
+                            onClick={() => votePostDown(post.id)}
+                          />
+                        </span>
+                      </List.Item>
+                    </List>
+                  </List.Description>
+                </List.Content>
+              </List.Item>
+            ))}
+          </List>
+
+          {/* <li key={post.id}>
                 <Link to={`/post/${post.id}`}>{post.title}</Link>
                 <span>{post.commentCount} comments</span>
                 <span>
@@ -63,9 +105,7 @@ class PostList extends Component {
                     Vote Down
                   </button>
                 </span>
-              </li>
-            ))}
-          </ul>
+              </li> */}
         </Segment>
       </div>
     );

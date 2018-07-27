@@ -7,3 +7,7 @@ body {
 .inline-margin {
   margin-left: 5px;
 }
+
+.inline-btns {
+  padding-left: 1rem;
+}
