@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { fetchPost, updatePost } from "../actions";
+import { fetchPost, fetchCategories, updatePost } from "../actions";
 import EditPostPage from "../components/EditPostPage";
 
 class EditPostPageContainer extends Component {
@@ -12,6 +12,7 @@ class EditPostPageContainer extends Component {
       post,
       fetchPost
     } = this.props;
+    this.props.fetchCategories();
     if (!post) {
       fetchPost(postId);
     }
@@ -68,6 +69,7 @@ const mapStateToProps = (
 
 const mapDispatchToProps = dispatch => ({
   fetchPost: postId => dispatch(fetchPost(postId)),
+  fetchCategories: () => dispatch(fetchCategories()),
   updatePost: (postId, post) => dispatch(updatePost(postId, post))
 });
 

@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { fetchAllPosts } from "../actions";
+import { fetchPosts, fetchCategories } from "../actions";
 import CategoryPage from "../components/CategoryPage";
 
 class CategoryPageContainer extends Component {
   componentDidMount() {
-    this.props.fetchAllPosts();
+    this.props.fetchCategories();
+    this.props.fetchPosts();
   }
   render() {
     const {
@@ -43,7 +44,8 @@ const mapStateToProps = (
 });
 
 const mapDispatchToProps = dispatch => ({
-  fetchAllPosts: () => dispatch(fetchAllPosts())
+  fetchCategories: () => dispatch(fetchCategories()),
+  fetchPosts: () => dispatch(fetchPosts())
 });
 
 export default connect(

@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { fetchAllPosts } from "../actions";
+import { fetchPosts, fetchCategories } from "../actions";
 import HomePage from "../components/HomePage";
 
 class HomePageContainer extends Component {
   componentDidMount() {
-    this.props.fetchAllPosts();
+    this.props.fetchPosts();
+    this.props.fetchCategories();
   }
 
   render() {
@@ -27,7 +28,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  fetchAllPosts: () => dispatch(fetchAllPosts())
+  fetchCategories: () => dispatch(fetchCategories()),
+  fetchPosts: () => dispatch(fetchPosts())
 });
 
 export default connect(
