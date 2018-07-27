@@ -9,15 +9,6 @@ class NewComment extends Component {
     commentAuthor: ""
   };
 
-  componentDidUpdate = prevProps => {
-    if (this.props.resetCommentData && !prevProps.resetCommentData) {
-      this.setState({
-        commentBody: "",
-        commentAuthor: ""
-      });
-    }
-  };
-
   handleCommentBodyChange = event => {
     this.setState({ commentBody: event.target.value });
   };
@@ -30,7 +21,12 @@ class NewComment extends Component {
     event.preventDefault();
     const { commentBody, commentAuthor } = this.state;
     const { onCommentSave } = this.props;
-    onCommentSave(commentBody, commentAuthor);
+    onCommentSave(commentBody, commentAuthor).then(() =>
+      this.setState({
+        commentBody: "",
+        commentAuthor: ""
+      })
+    );
   };
 
   isValidComment = () => {
@@ -44,7 +40,7 @@ class NewComment extends Component {
   };
 
   render() {
-    const { commentBody } = this.state;
+    const { commentBody, commentAuthor } = this.state;
     const isSubmitDisabled = !this.isValidComment();
     return (
       <div>
@@ -57,7 +53,10 @@ class NewComment extends Component {
             />
           </label>
 
-          <AuthorPicker onAuthorChange={this.handleCommentAuthorChange} />
+          <AuthorPicker
+            author={commentAuthor}
+            onAuthorChange={this.handleCommentAuthorChange}
+          />
           <input
             type="submit"
             value="Comment"

@@ -58,17 +58,11 @@ class EditPostPage extends Component {
   render() {
     const { title, body, author, categoryPath } = this.state;
     const {
-      isLoading,
-      isSendingData,
       errorFetchingData,
       errorSendingData,
       editedPost,
       categories
     } = this.props;
-
-    if (isLoading || isSendingData) {
-      return <div>Loading...</div>;
-    }
 
     const isEditingPost = editedPost !== undefined;
     const isSubmitDisabled = !this.isValidPost();
@@ -90,7 +84,7 @@ class EditPostPage extends Component {
             </label>
 
             <AuthorPicker
-              defaultValue={author}
+              author={author}
               onAuthorChange={this.handleAuthorChange}
             />
 

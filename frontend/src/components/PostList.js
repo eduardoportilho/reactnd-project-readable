@@ -19,7 +19,7 @@ const SORT_OPTIONS = [
 
 class PostList extends Component {
   state = {
-    sortedPosts: this.props.posts || [],
+    sortedPosts: [],
     sortBy: ""
   };
 
@@ -33,7 +33,9 @@ class PostList extends Component {
   };
 
   render() {
+    const { posts } = this.props;
     const { sortBy, sortedPosts } = this.state;
+    const displayPosts = sortedPosts.length ? sortedPosts : posts;
     return (
       <div>
         <label>
@@ -50,7 +52,7 @@ class PostList extends Component {
           </select>
         </label>
         <ul>
-          {sortedPosts.map(post => (
+          {displayPosts.map(post => (
             <li key={post.id}>
               <Link to={`/post/${post.id}`}>{post.title}</Link>
             </li>

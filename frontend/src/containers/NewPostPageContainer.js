@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import uuidv1 from "uuid/v1";
-import { Redirect } from "react-router-dom";
 import { fetchCategories, savePost } from "../actions";
 import EditPostPage from "../components/EditPostPage";
 
@@ -12,30 +11,23 @@ class NewPostPageContainer extends Component {
 
   render() {
     const {
-      isLoading,
-      isSendingData,
       errorFetchingData,
       errorSendingData,
       categories,
       savePost,
-      savedPost
+      history
     } = this.props;
 
-    const savePostWithGeneratedId = post => {
+    const savePostWithGeneratedId = post =>
       savePost({
         id: uuidv1(),
         ...post
+      }).then(({ post }) => {
+        history.push(`/post/${post.id}`);
       });
-    };
-    const isPostCreated = savedPost !== undefined;
-    if (isPostCreated) {
-      return <Redirect to={`/post/${savedPost.id}`} />;
-    }
 
     return (
       <EditPostPage
-        isLoading={isLoading}
-        isSendingData={isSendingData}
         errorFetchingData={errorFetchingData}
         errorSendingData={errorSendingData}
         categories={categories}
@@ -46,12 +38,9 @@ class NewPostPageContainer extends Component {
 }
 
 const mapStateToProps = state => ({
-  isLoading: state.postData.isLoading,
-  isSendingData: state.postData.isSendingData,
   errorFetchingData: state.postData.errorFetchingData,
   errorSendingData: state.postData.errorSendingData,
-  categories: state.postData.categories,
-  savedPost: state.postData.savedPost
+  categories: state.postData.categories
 });
 
 const mapDispatchToProps = dispatch => ({

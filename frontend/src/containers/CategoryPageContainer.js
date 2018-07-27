@@ -1,23 +1,17 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { fetchPostsFromCategory } from "../actions";
+import { fetchAllPosts } from "../actions";
 import CategoryPage from "../components/CategoryPage";
 
 class CategoryPageContainer extends Component {
   componentDidMount() {
-    const {
-      match: {
-        params: { categoryPath }
-      }
-    } = this.props;
-    this.props.fetchPostsFromCategory(categoryPath);
+    this.props.fetchAllPosts();
   }
   render() {
     const {
       match: {
         params: { categoryPath }
       },
-      isLoading,
       errorFetchingData,
       categories,
       postsFromCategory
@@ -25,7 +19,6 @@ class CategoryPageContainer extends Component {
     return (
       <CategoryPage
         categoryPath={categoryPath}
-        isLoading={isLoading}
         errorFetchingData={errorFetchingData}
         categories={categories}
         postsFromCategory={postsFromCategory}
@@ -34,16 +27,23 @@ class CategoryPageContainer extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  isLoading: state.postData.isLoading,
+const mapStateToProps = (
+  state,
+  {
+    match: {
+      params: { categoryPath }
+    }
+  }
+) => ({
   errorFetchingData: state.postData.errorFetchingData,
   categories: state.postData.categories,
-  postsFromCategory: state.postData.postsFromCategory
+  postsFromCategory: state.postData.posts.filter(
+    post => post.category === categoryPath
+  )
 });
 
 const mapDispatchToProps = dispatch => ({
-  fetchPostsFromCategory: categoryPath =>
-    dispatch(fetchPostsFromCategory(categoryPath))
+  fetchAllPosts: () => dispatch(fetchAllPosts())
 });
 
 export default connect(

@@ -1,88 +1,68 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Redirect } from "react-router-dom";
-import { fetchPost, deletePost, saveComment } from "../actions";
+import { fetchPost, deletePost } from "../actions";
 import PostPage from "../components/PostPage";
 
-class HomePageContainer extends Component {
+class PostPageContainer extends Component {
   componentDidMount() {
     const {
       match: {
         params: { postId }
       },
+      post,
       fetchPost
     } = this.props;
-    fetchPost(postId);
-  }
-
-  componentDidUpdate = prevProps => {
-    const {
-      match: {
-        params: { postId }
-      },
-      fetchPost,
-      savedComment
-    } = this.props;
-
-    // Comment saved, update post data
-    if (savedComment && !prevProps.savedComment) {
+    if (!post) {
       fetchPost(postId);
     }
-  };
+  }
 
   render() {
     const {
-      isLoading,
-      isSendingData,
       errorFetchingData,
       errorSendingData,
       post,
-      comments,
-      saveComment,
       deletePost,
-      savedComment,
-      isPostDeleted
+      history
     } = this.props;
 
-    if (isPostDeleted) {
-      return <Redirect to="/" />;
+    if (!post) {
+      return <div>Loading...</div>;
     }
-    const isCommentSaved = savedComment !== null;
+
+    const deleteAndRedirect = postId =>
+      deletePost(postId).then(() => history.push("/"));
 
     return (
       <PostPage
-        isLoading={isLoading}
-        isSendingData={isSendingData}
-        isCommentSaved={isCommentSaved}
         errorFetchingData={errorFetchingData}
         errorSendingData={errorSendingData}
         post={post}
-        comments={comments}
-        saveComment={saveComment}
-        deletePost={deletePost}
+        deletePost={deleteAndRedirect}
       />
     );
   }
 }
 
-const mapStateToProps = state => ({
-  isLoading: state.postData.isLoading,
-  isSendingData: state.postData.isSendingData,
+const mapStateToProps = (
+  state,
+  {
+    match: {
+      params: { postId }
+    }
+  }
+) => ({
   errorFetchingData: state.postData.errorFetchingData,
   errorSendingData: state.postData.errorSendingData,
-  post: state.postData.post,
-  comments: state.postData.comments,
-  savedComment: state.postData.savedComment,
-  isPostDeleted: state.postData.isPostDeleted
+  post: state.postData.posts.find(post => post.id === postId)
 });
 
 const mapDispatchToProps = dispatch => ({
   fetchPost: postId => dispatch(fetchPost(postId)),
-  deletePost: postId => dispatch(deletePost(postId)),
-  saveComment: comment => dispatch(saveComment(comment))
+  deletePost: postId => dispatch(deletePost(postId))
 });
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(HomePageContainer);
+)(PostPageContainer);

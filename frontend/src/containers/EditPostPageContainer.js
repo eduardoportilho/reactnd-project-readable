@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Redirect } from "react-router-dom";
 import { fetchPost, updatePost } from "../actions";
 import EditPostPage from "../components/EditPostPage";
 
@@ -10,9 +9,12 @@ class EditPostPageContainer extends Component {
       match: {
         params: { postId }
       },
+      post,
       fetchPost
     } = this.props;
-    fetchPost(postId);
+    if (!post) {
+      fetchPost(postId);
+    }
   }
 
   render() {
@@ -20,22 +22,18 @@ class EditPostPageContainer extends Component {
       match: {
         params: { postId }
       },
-      isLoading,
-      isSendingData,
+      history,
       errorFetchingData,
       errorSendingData,
       categories,
       post,
-      updatePost,
-      savedPost
+      updatePost
     } = this.props;
 
-    const updatePostWithId = updatedPost => updatePost(postId, updatedPost);
-
-    const isEditCompleted = savedPost !== undefined;
-    if (isEditCompleted) {
-      return <Redirect to={`/post/${postId}`} />;
-    }
+    const updatePostWithId = updatedPost =>
+      updatePost(postId, updatedPost).then(({ post }) => {
+        history.push(`/post/${post.id}`);
+      });
 
     // Using the "Fully uncontrolled component with a key" approach to reset the form content when the post is fetched.
     // https://reactjs.org/blog/2018/06/07/you-probably-dont-need-derived-state.html#recommendation-fully-uncontrolled-component-with-a-key
@@ -44,8 +42,6 @@ class EditPostPageContainer extends Component {
     return (
       <EditPostPage
         key={pageKey}
-        isLoading={isLoading}
-        isSendingData={isSendingData}
         errorFetchingData={errorFetchingData}
         errorSendingData={errorSendingData}
         categories={categories}
@@ -56,14 +52,18 @@ class EditPostPageContainer extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  isLoading: state.postData.isLoading,
-  isSendingData: state.postData.isSendingData,
+const mapStateToProps = (
+  state,
+  {
+    match: {
+      params: { postId }
+    }
+  }
+) => ({
   errorFetchingData: state.postData.errorFetchingData,
   errorSendingData: state.postData.errorSendingData,
-  post: state.postData.post,
-  categories: state.postData.categories,
-  savedPost: state.postData.savedPost
+  post: state.postData.posts.find(post => post.id === postId),
+  categories: state.postData.categories
 });
 
 const mapDispatchToProps = dispatch => ({

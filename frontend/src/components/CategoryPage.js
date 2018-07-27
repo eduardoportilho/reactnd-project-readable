@@ -4,7 +4,6 @@ import PostList from "./PostList";
 
 const CategoryPage = ({
   categoryPath,
-  isLoading,
   errorFetchingData,
   categories,
   postsFromCategory
@@ -14,18 +13,14 @@ const CategoryPage = ({
   return (
     <div>
       {errorFetchingData && <div>Error: {errorFetchingData} </div>}
-      {isLoading ? (
-        <div>Loading...</div>
-      ) : (
+      <div>
+        <h1>Category: {pageCategory && pageCategory.name}</h1>
         <div>
-          <h1>Category: {pageCategory && pageCategory.name}</h1>
-          <div>
-            <h2>Posts</h2>
-            <PostList posts={postsFromCategory} />
-          </div>
-          <Link to="/">Home</Link>
+          <h2>Posts</h2>
+          <PostList posts={postsFromCategory} />
         </div>
-      )}
+        <Link to="/">Home</Link>
+      </div>
     </div>
   );
 };

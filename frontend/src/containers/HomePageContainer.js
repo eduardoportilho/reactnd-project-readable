@@ -1,18 +1,17 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { fetchInitialData } from "../actions";
+import { fetchAllPosts } from "../actions";
 import HomePage from "../components/HomePage";
 
 class HomePageContainer extends Component {
   componentDidMount() {
-    this.props.fetchInitialData();
+    this.props.fetchAllPosts();
   }
 
   render() {
-    const { isLoading, errorFetchingData, categories, posts } = this.props;
+    const { errorFetchingData, categories, posts } = this.props;
     return (
       <HomePage
-        isLoading={isLoading}
         errorFetchingData={errorFetchingData}
         categories={categories}
         posts={posts}
@@ -22,14 +21,13 @@ class HomePageContainer extends Component {
 }
 
 const mapStateToProps = state => ({
-  isLoading: state.postData.isLoading,
   errorFetchingData: state.postData.errorFetchingData,
   categories: state.postData.categories,
   posts: state.postData.posts
 });
 
 const mapDispatchToProps = dispatch => ({
-  fetchInitialData: () => dispatch(fetchInitialData())
+  fetchAllPosts: () => dispatch(fetchAllPosts())
 });
 
 export default connect(

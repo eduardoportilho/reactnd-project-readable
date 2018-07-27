@@ -1,94 +1,96 @@
 import { combineReducers } from "redux";
 import {
-  DATA_FETCHING_STARTED,
-  DATA_SENDING_STARTED,
   ERROR_FETCHING_DATA,
   ERROR_SENDING_DATA,
   INITIAL_DATA_FETCHED,
-  CATEGORY_POSTS_FETCHED,
   POST_FETCHED,
+  POST_COMMENTS_FETCHED,
   CATEGORIES_FETCHED,
-  POST_SAVED,
+  POST_ADDED,
+  POST_UPDATED,
   COMMENT_SAVED,
   POST_DELETED
 } from "../actions";
 
 const INITIAL_STATE = {
-  isLoading: false,
-  isSendingData: false,
   errorFetchingData: undefined,
   errorSendingData: undefined,
   categories: [],
   posts: [],
-  postsFromCategory: [],
-  post: undefined,
-  comments: [],
-  savedPost: undefined,
-  savedComment: undefined,
-  isPostDeleted: false
+  postComments: []
 };
 
 function postData(state = INITIAL_STATE, action) {
+  let postComments, comments;
   switch (action.type) {
-    case DATA_FETCHING_STARTED:
-      return {
-        ...INITIAL_STATE,
-        isLoading: true
-      };
-    case DATA_SENDING_STARTED:
-      return {
-        ...INITIAL_STATE,
-        isSendingData: true
-      };
     case ERROR_FETCHING_DATA:
       return {
-        ...INITIAL_STATE,
+        ...state,
         errorFetchingData: action.error
       };
     case ERROR_SENDING_DATA:
       return {
-        ...INITIAL_STATE,
+        ...state,
         errorSendingData: action.error
       };
 
     case INITIAL_DATA_FETCHED:
       return {
-        ...INITIAL_STATE,
+        ...state,
         categories: action.categories,
         posts: action.posts
       };
-    case CATEGORY_POSTS_FETCHED:
-      return {
-        ...INITIAL_STATE,
-        postsFromCategory: action.postsFromCategory,
-        categories: action.categories
-      };
     case POST_FETCHED:
       return {
-        ...INITIAL_STATE,
-        post: action.post,
-        comments: action.comments,
+        ...state,
+        posts: [
+          ...state.posts.filter(post => post.id !== action.post.id),
+          action.post
+        ],
         categories: action.categories
+      };
+    case POST_COMMENTS_FETCHED:
+      postComments = { ...state.postComments };
+      postComments[action.postId] = action.comments;
+      return {
+        ...state,
+        postComments
       };
     case CATEGORIES_FETCHED:
       return {
-        ...INITIAL_STATE,
+        ...state,
         categories: action.categories
       };
-    case POST_SAVED:
+    case POST_ADDED:
       return {
-        ...INITIAL_STATE,
-        savedPost: action.post
+        ...state,
+        posts: [
+          ...state.posts.filter(post => post.id !== action.post.id),
+          action.post
+        ]
+      };
+    case POST_UPDATED:
+      return {
+        ...state,
+        posts: state.posts.map(
+          post => (post.id === action.post.id ? action.post : post)
+        )
       };
     case COMMENT_SAVED:
+      postComments = { ...state.postComments };
+      comments = postComments[action.comment.parentId] || [];
+      postComments[action.comment.parentId] = [...comments, action.comment];
       return {
-        ...INITIAL_STATE,
-        savedComment: action.comment
+        ...state,
+        postComments
       };
     case POST_DELETED:
+      postComments = { ...state.postComments };
+      delete postComments[action.postId];
       return {
-        ...INITIAL_STATE,
-        isPostDeleted: true
+        ...state,
+        posts: state.posts.filter(post => post.id !== action.postId),
+        postComments
       };
     default:
       return state;

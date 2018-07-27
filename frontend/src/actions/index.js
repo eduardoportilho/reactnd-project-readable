@@ -10,20 +10,6 @@ import {
   addComment
 } from "../utils/PostsAPI";
 
-export const DATA_FETCHING_STARTED = "DATA_FETCHING_STARTED";
-function dataFetchingStarted() {
-  return {
-    type: DATA_FETCHING_STARTED
-  };
-}
-
-export const DATA_SENDING_STARTED = "DATA_SENDING_STARTED";
-function dataSendingStarted() {
-  return {
-    type: DATA_SENDING_STARTED
-  };
-}
-
 export const ERROR_FETCHING_DATA = "ERROR_FETCHING_DATA";
 function errorFetchingData(error) {
   return {
@@ -49,22 +35,21 @@ function initialDataFetched(categories, posts) {
   };
 }
 
-export const CATEGORY_POSTS_FETCHED = "CATEGORY_POSTS_FETCHED";
-function categoryPostsFetched(categories, postsFromCategory) {
-  return {
-    type: CATEGORY_POSTS_FETCHED,
-    categories,
-    postsFromCategory
-  };
-}
-
 export const POST_FETCHED = "POST_FETCHED";
-function postFetched(post, comments, categories) {
+function postFetched(post, categories) {
   return {
     type: POST_FETCHED,
     post,
-    comments,
     categories
+  };
+}
+
+export const POST_COMMENTS_FETCHED = "POST_COMMENTS_FETCHED";
+function postCommentsFetched(postId, comments) {
+  return {
+    type: POST_COMMENTS_FETCHED,
+    postId,
+    comments
   };
 }
 
@@ -76,10 +61,18 @@ function categoriesFetched(categories) {
   };
 }
 
-export const POST_SAVED = "POST_SAVED";
-function postSaved(post) {
+export const POST_ADDED = "POST_ADDED";
+function postAdded(post) {
   return {
-    type: POST_SAVED,
+    type: POST_ADDED,
+    post
+  };
+}
+
+export const POST_UPDATED = "POST_UPDATED";
+function postUpdated(post) {
+  return {
+    type: POST_UPDATED,
     post
   };
 }
@@ -93,72 +86,52 @@ function commentSaved(comment) {
 }
 
 export const POST_DELETED = "POST_DELETED";
-function postDeleted() {
+function postDeleted(postId) {
   return {
-    type: POST_DELETED
+    type: POST_DELETED,
+    postId
   };
 }
 
-export const fetchInitialData = () => dispatch => {
-  dispatch(dataFetchingStarted());
+export const fetchAllPosts = () => dispatch =>
   Promise.all([getCategories(), getAllPosts()])
     .then(([categories, posts]) =>
       dispatch(initialDataFetched(categories, posts))
     )
     .catch(error => dispatch(errorFetchingData(error)));
-};
 
-export const fetchPostsFromCategory = categoryPath => dispatch => {
-  dispatch(dataFetchingStarted());
-  // Fetching the list of categories is necessary to get the category name
-  Promise.all([getCategories(), getPostsFromCategory(categoryPath)])
-    .then(([categories, postsFromCategory]) =>
-      dispatch(categoryPostsFetched(categories, postsFromCategory))
-    )
-    .catch(error => dispatch(errorFetchingData(error)));
-};
-
-export const fetchPost = postId => dispatch => {
-  dispatch(dataFetchingStarted());
+export const fetchPost = postId => dispatch =>
   // Fetching the list of categories is necessary to be able to edit the post
-  Promise.all([getPost(postId), getPostComments(postId), getCategories()])
-    .then(([post, comments, categories]) =>
-      dispatch(postFetched(post, comments, categories))
-    )
+  Promise.all([getPost(postId), getCategories()])
+    .then(([post, categories]) => dispatch(postFetched(post, categories)))
     .catch(error => dispatch(errorFetchingData(error)));
-};
 
-export const fetchCategories = () => dispatch => {
-  dispatch(dataFetchingStarted());
+export const fetchPostComments = postId => dispatch =>
+  getPostComments(postId)
+    .then(comments => dispatch(postCommentsFetched(postId, comments)))
+    .catch(error => dispatch(errorFetchingData(error)));
+
+export const fetchCategories = () => dispatch =>
   getCategories()
     .then(categories => dispatch(categoriesFetched(categories)))
     .catch(error => dispatch(errorFetchingData(error)));
-};
 
-export const savePost = post => dispatch => {
-  dispatch(dataSendingStarted());
+export const savePost = post => dispatch =>
   addNewPost(post)
-    .then(post => dispatch(postSaved(post)))
+    .then(post => dispatch(postAdded(post)))
     .catch(error => dispatch(errorSendingData(error)));
-};
 
-export const updatePost = (id, post) => dispatch => {
-  dispatch(dataSendingStarted());
+export const updatePost = (id, post) => dispatch =>
   updatePostAPI(id, post)
-    .then(updatedPost => dispatch(postSaved(updatedPost)))
+    .then(updatedPost => dispatch(postUpdated(updatedPost)))
     .catch(error => dispatch(errorSendingData(error)));
-};
 
-export const deletePost = id => dispatch => {
-  dispatch(dataSendingStarted());
+export const deletePost = id => dispatch =>
   deletePostAPI(id)
-    .then(() => dispatch(postDeleted()))
+    .then(() => dispatch(postDeleted(id)))
     .catch(error => dispatch(errorSendingData(error)));
-};
 
-export const saveComment = comment => dispatch => {
-  dispatch(dataSendingStarted());
+export const saveComment = comment => dispatch =>
   addComment(comment)
     .then(comment => dispatch(commentSaved(comment)))
     .catch(error => dispatch(errorSendingData(error)));
-};
