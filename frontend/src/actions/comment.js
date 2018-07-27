@@ -1,7 +1,8 @@
 import {
   getPostComments,
   addComment,
-  deleteComment as deleteCommentAPI
+  deleteComment as deleteCommentAPI,
+  updateComment as updateCommentAPI
 } from "../utils/PostsAPI";
 import { errorFetchingData, errorSendingData } from ".";
 
@@ -31,6 +32,14 @@ function commentDeleted(commentId, postId) {
   };
 }
 
+export const COMMENT_UPDATED = "COMMENT_UPDATED";
+function commentUpdated(comment) {
+  return {
+    type: COMMENT_UPDATED,
+    comment
+  };
+}
+
 export const fetchPostComments = postId => dispatch =>
   getPostComments(postId)
     .then(comments => dispatch(commentsFetched(postId, comments)))
@@ -44,4 +53,9 @@ export const saveComment = comment => dispatch =>
 export const deleteComment = commentId => dispatch =>
   deleteCommentAPI(commentId)
     .then(comment => dispatch(commentDeleted(commentId, comment.parentId)))
+    .catch(error => dispatch(errorSendingData(error)));
+
+export const updateComment = (id, comment) => dispatch =>
+  updateCommentAPI(id, comment)
+    .then(updatedComment => dispatch(commentUpdated(updatedComment)))
     .catch(error => dispatch(errorSendingData(error)));

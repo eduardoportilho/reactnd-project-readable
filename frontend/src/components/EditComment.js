@@ -3,10 +3,12 @@ import AuthorPicker from "./AuthorPicker";
 
 const NOT_EMPTY_REGEXP = /[\w]+/gi;
 
-class NewComment extends Component {
+class EditComment extends Component {
   state = {
-    commentBody: "",
-    commentAuthor: ""
+    commentBody: this.props.editedComment ? this.props.editedComment.body : "",
+    commentAuthor: this.props.editedComment
+      ? this.props.editedComment.author
+      : ""
   };
 
   handleCommentBodyChange = event => {
@@ -20,13 +22,20 @@ class NewComment extends Component {
   handleCommentSubmit = event => {
     event.preventDefault();
     const { commentBody, commentAuthor } = this.state;
-    const { onCommentSave } = this.props;
-    onCommentSave(commentBody, commentAuthor).then(() =>
-      this.setState({
-        commentBody: "",
-        commentAuthor: ""
-      })
-    );
+    const { onCommentSave, editedComment } = this.props;
+    const isEditingComment = editedComment !== undefined;
+    onCommentSave(commentBody, commentAuthor).then(() => {
+      if (!isEditingComment) {
+        this.setState({
+          commentBody: "",
+          commentAuthor: ""
+        });
+      }
+    });
+  };
+  handleCancelEdit = event => {
+    event.preventDefault();
+    this.props.onCancelEdit();
   };
 
   isValidComment = () => {
@@ -41,12 +50,14 @@ class NewComment extends Component {
 
   render() {
     const { commentBody, commentAuthor } = this.state;
+    const { editedComment } = this.props;
     const isSubmitDisabled = !this.isValidComment();
+    const isEditingComment = editedComment !== undefined;
     return (
       <div>
         <form>
           <label>
-            Add a new comment:
+            {isEditingComment ? "Edit Comment:" : "Add a new comment:"}
             <textarea
               value={commentBody}
               onChange={this.handleCommentBodyChange}
@@ -59,14 +70,17 @@ class NewComment extends Component {
           />
           <input
             type="submit"
-            value="Comment"
+            value={isEditingComment ? "Update" : "Comment"}
             onClick={this.handleCommentSubmit}
             disabled={isSubmitDisabled}
           />
+          {isEditingComment && (
+            <button onClick={this.handleCancelEdit}>Cancel</button>
+          )}
         </form>
       </div>
     );
   }
 }
 
-export default NewComment;
+export default EditComment;

@@ -24,9 +24,11 @@ import {
   COMMENTS_FETCHED,
   COMMENT_SAVED,
   COMMENT_DELETED,
+  COMMENT_UPDATED,
   fetchPostComments,
   saveComment,
-  deleteComment
+  deleteComment,
+  updateComment
 } from "./comment";
 
 export {
@@ -41,6 +43,7 @@ export {
   COMMENTS_FETCHED,
   COMMENT_SAVED,
   COMMENT_DELETED,
+  COMMENT_UPDATED,
   errorFetchingData,
   errorSendingData,
   fetchPosts,
@@ -51,5 +54,6 @@ export {
   fetchCategories,
   fetchPostComments,
   saveComment,
-  deleteComment
+  deleteComment,
+  updateComment
 };

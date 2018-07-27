@@ -1,7 +1,12 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { fetchPostComments, saveComment, deleteComment } from "../actions";
-import Comments from "../components/Comments";
+import {
+  fetchPostComments,
+  saveComment,
+  deleteComment,
+  updateComment
+} from "../actions";
+import CommentList from "../components/CommentList";
 
 class CommentsContainer extends Component {
   componentDidMount() {
@@ -18,7 +23,8 @@ class CommentsContainer extends Component {
       postId,
       comments,
       saveComment,
-      deleteComment
+      deleteComment,
+      updateComment
     } = this.props;
 
     if (!comments) {
@@ -26,13 +32,14 @@ class CommentsContainer extends Component {
     }
 
     return (
-      <Comments
+      <CommentList
         errorFetchingData={errorFetchingData}
         errorSendingData={errorSendingData}
         postId={postId}
         comments={comments}
         saveComment={saveComment}
         deleteComment={deleteComment}
+        updateComment={updateComment}
       />
     );
   }
@@ -47,7 +54,8 @@ const mapStateToProps = (state, { postId }) => ({
 const mapDispatchToProps = dispatch => ({
   fetchPostComments: postId => dispatch(fetchPostComments(postId)),
   saveComment: comment => dispatch(saveComment(comment)),
-  deleteComment: commentId => dispatch(deleteComment(commentId))
+  deleteComment: commentId => dispatch(deleteComment(commentId)),
+  updateComment: (id, comment) => dispatch(updateComment(id, comment))
 });
 
 export default connect(
