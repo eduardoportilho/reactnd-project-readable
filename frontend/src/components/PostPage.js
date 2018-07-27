@@ -19,6 +19,7 @@ class PostPage extends Component {
           <h1>{post.title}</h1>
           <p>by {post.author}</p>
           <p>at {post.timestamp}</p>
+          <p>{post.commentCount} comments</p>
           <p>{post.body}</p>
           <p>Category: {post.category}</p>
           <p>Votes: {post.voteScore}</p>

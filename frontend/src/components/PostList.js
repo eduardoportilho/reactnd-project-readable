@@ -55,6 +55,7 @@ class PostList extends Component {
           {displayPosts.map(post => (
             <li key={post.id}>
               <Link to={`/post/${post.id}`}>{post.title}</Link>
+              <span>{post.commentCount} comments</span>
             </li>
           ))}
         </ul>

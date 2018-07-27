@@ -3,7 +3,9 @@ import {
   POST_FETCHED,
   POST_ADDED,
   POST_UPDATED,
-  POST_DELETED
+  POST_DELETED,
+  COMMENT_SAVED,
+  COMMENT_DELETED
 } from "../actions";
 
 const INITIAL_STATE = {
@@ -38,6 +40,32 @@ function post(state = INITIAL_STATE, action) {
         ...state,
         posts: state.posts.map(
           post => (post.id === action.post.id ? action.post : post)
+        )
+      };
+    case COMMENT_SAVED:
+      return {
+        ...state,
+        posts: state.posts.map(
+          post =>
+            post.id === action.comment.parentId
+              ? {
+                  ...post,
+                  commentCount: post.commentCount + 1
+                }
+              : post
+        )
+      };
+    case COMMENT_DELETED:
+      return {
+        ...state,
+        posts: state.posts.map(
+          post =>
+            post.id === action.postId
+              ? {
+                  ...post,
+                  commentCount: post.commentCount - 1
+                }
+              : post
         )
       };
     case POST_DELETED:
