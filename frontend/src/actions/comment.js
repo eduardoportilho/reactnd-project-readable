@@ -1,10 +1,14 @@
-import { getPostComments, addComment } from "../utils/PostsAPI";
+import {
+  getPostComments,
+  addComment,
+  deleteComment as deleteCommentAPI
+} from "../utils/PostsAPI";
 import { errorFetchingData, errorSendingData } from ".";
 
-export const POST_COMMENTS_FETCHED = "POST_COMMENTS_FETCHED";
-function postCommentsFetched(postId, comments) {
+export const COMMENTS_FETCHED = "COMMENTS_FETCHED";
+function commentsFetched(postId, comments) {
   return {
-    type: POST_COMMENTS_FETCHED,
+    type: COMMENTS_FETCHED,
     postId,
     comments
   };
@@ -17,12 +21,27 @@ function commentSaved(comment) {
     comment
   };
 }
+
+export const COMMENT_DELETED = "COMMENT_DELETED";
+function commentDeleted(commentId, postId) {
+  return {
+    type: COMMENT_DELETED,
+    postId,
+    commentId
+  };
+}
+
 export const fetchPostComments = postId => dispatch =>
   getPostComments(postId)
-    .then(comments => dispatch(postCommentsFetched(postId, comments)))
+    .then(comments => dispatch(commentsFetched(postId, comments)))
     .catch(error => dispatch(errorFetchingData(error)));
 
 export const saveComment = comment => dispatch =>
   addComment(comment)
     .then(comment => dispatch(commentSaved(comment)))
+    .catch(error => dispatch(errorSendingData(error)));
+
+export const deleteComment = commentId => dispatch =>
+  deleteCommentAPI(commentId)
+    .then(comment => dispatch(commentDeleted(commentId, comment.parentId)))
     .catch(error => dispatch(errorSendingData(error)));

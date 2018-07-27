@@ -14,6 +14,8 @@ class Comments extends Component {
     });
   };
 
+  onCommentDelete = commentId => () => this.props.deleteComment(commentId);
+
   render() {
     const { errorFetchingData, errorSendingData, comments } = this.props;
 
@@ -30,6 +32,9 @@ class Comments extends Component {
                 <p>by {comment.author}</p>
                 <p>at {comment.timestamp}</p>
                 <p>Votes: {comment.voteScore}</p>
+                <button onClick={this.onCommentDelete(comment.id)}>
+                  Delete
+                </button>
               </div>
             ))
           ) : (

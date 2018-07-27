@@ -21,10 +21,12 @@ import {
 import { CATEGORIES_FETCHED, fetchCategories } from "./category";
 
 import {
-  POST_COMMENTS_FETCHED,
+  COMMENTS_FETCHED,
   COMMENT_SAVED,
+  COMMENT_DELETED,
   fetchPostComments,
-  saveComment
+  saveComment,
+  deleteComment
 } from "./comment";
 
 export {
@@ -36,8 +38,9 @@ export {
   POST_UPDATED,
   POST_DELETED,
   CATEGORIES_FETCHED,
-  POST_COMMENTS_FETCHED,
+  COMMENTS_FETCHED,
   COMMENT_SAVED,
+  COMMENT_DELETED,
   errorFetchingData,
   errorSendingData,
   fetchPosts,
@@ -47,5 +50,6 @@ export {
   deletePost,
   fetchCategories,
   fetchPostComments,
-  saveComment
+  saveComment,
+  deleteComment
 };

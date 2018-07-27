@@ -1,4 +1,9 @@
-import { POST_COMMENTS_FETCHED, COMMENT_SAVED, POST_DELETED } from "../actions";
+import {
+  COMMENTS_FETCHED,
+  COMMENT_SAVED,
+  COMMENT_DELETED,
+  POST_DELETED
+} from "../actions";
 
 const INITIAL_STATE = {
   postComments: []
@@ -7,7 +12,7 @@ const INITIAL_STATE = {
 function comment(state = INITIAL_STATE, action) {
   let postComments, comments;
   switch (action.type) {
-    case POST_COMMENTS_FETCHED:
+    case COMMENTS_FETCHED:
       postComments = { ...state.postComments };
       postComments[action.postId] = action.comments;
       return {
@@ -18,6 +23,16 @@ function comment(state = INITIAL_STATE, action) {
       postComments = { ...state.postComments };
       comments = postComments[action.comment.parentId] || [];
       postComments[action.comment.parentId] = [...comments, action.comment];
+      return {
+        ...state,
+        postComments
+      };
+    case COMMENT_DELETED:
+      postComments = { ...state.postComments };
+      comments = postComments[action.postId].filter(
+        comment => comment.id !== action.commentId
+      );
+      postComments[action.postId] = comments;
       return {
         ...state,
         postComments
