@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { fetchPost, deletePost } from "../actions";
+import { fetchPost, deletePost, votePostUp, votePostDown } from "../actions";
 import PostPage from "../components/PostPage";
 
 class PostPageContainer extends Component {
@@ -23,6 +23,8 @@ class PostPageContainer extends Component {
       errorSendingData,
       post,
       deletePost,
+      votePostUp,
+      votePostDown,
       history
     } = this.props;
 
@@ -39,6 +41,8 @@ class PostPageContainer extends Component {
         errorSendingData={errorSendingData}
         post={post}
         deletePost={deleteAndRedirect}
+        votePostUp={votePostUp}
+        votePostDown={votePostDown}
       />
     );
   }
@@ -59,7 +63,9 @@ const mapStateToProps = (
 
 const mapDispatchToProps = dispatch => ({
   fetchPost: postId => dispatch(fetchPost(postId)),
-  deletePost: postId => dispatch(deletePost(postId))
+  deletePost: postId => dispatch(deletePost(postId)),
+  votePostUp: postId => dispatch(votePostUp(postId)),
+  votePostDown: postId => dispatch(votePostDown(postId))
 });
 
 export default connect(

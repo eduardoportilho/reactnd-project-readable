@@ -33,7 +33,7 @@ class PostList extends Component {
   };
 
   render() {
-    const { posts } = this.props;
+    const { posts, votePostUp, votePostDown } = this.props;
     const { sortBy, sortedPosts } = this.state;
     const displayPosts = sortedPosts.length ? sortedPosts : posts;
     return (
@@ -56,6 +56,11 @@ class PostList extends Component {
             <li key={post.id}>
               <Link to={`/post/${post.id}`}>{post.title}</Link>
               <span>{post.commentCount} comments</span>
+              <span>
+                Vote Score: {post.voteScore}
+                <button onClick={() => votePostUp(post.id)}>Vote Up</button>
+                <button onClick={() => votePostDown(post.id)}>Vote Down</button>
+              </span>
             </li>
           ))}
         </ul>

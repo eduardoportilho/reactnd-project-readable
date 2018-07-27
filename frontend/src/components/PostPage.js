@@ -9,7 +9,13 @@ class PostPage extends Component {
   };
 
   render() {
-    const { errorFetchingData, errorSendingData, post } = this.props;
+    const {
+      errorFetchingData,
+      errorSendingData,
+      post,
+      votePostUp,
+      votePostDown
+    } = this.props;
 
     return (
       <div>
@@ -22,7 +28,14 @@ class PostPage extends Component {
           <p>{post.commentCount} comments</p>
           <p>{post.body}</p>
           <p>Category: {post.category}</p>
-          <p>Votes: {post.voteScore}</p>
+          <div>
+            <h2>Score:</h2>
+            <p>Vote Score: {post.voteScore}</p>
+
+            <button onClick={() => votePostUp(post.id)}>Vote Up</button>
+
+            <button onClick={() => votePostDown(post.id)}>Vote Down</button>
+          </div>
 
           <CommentsContainer postId={post.id} />
 

@@ -55,6 +55,18 @@ export const deletePost = id =>
     headers
   }).then(res => res.json());
 
+export const voteOnPost = (postId, isUpVote) =>
+  fetch(`${api}/posts/${postId}`, {
+    method: "POST",
+    headers: {
+      ...headers,
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      option: isUpVote ? "upVote" : "downVote"
+    })
+  }).then(res => res.json());
+
 export const addComment = comment =>
   fetch(`${api}/comments`, {
     method: "POST",

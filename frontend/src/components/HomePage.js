@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import PostList from "./PostList";
+import PostListContainer from "../containers/PostListContainer";
 
 const HomePage = ({ errorFetchingData, categories, posts }) => (
   <div>
@@ -20,7 +20,7 @@ const HomePage = ({ errorFetchingData, categories, posts }) => (
       </div>
       <div>
         <h2>Posts</h2>
-        <PostList posts={posts} />
+        <PostListContainer posts={posts} />
       </div>
     </div>
   </div>

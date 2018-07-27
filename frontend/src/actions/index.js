@@ -11,11 +11,15 @@ import {
   POST_ADDED,
   POST_UPDATED,
   POST_DELETED,
+  POST_UP_VOTED,
+  POST_DOWN_VOTED,
   fetchPosts,
   fetchPost,
   savePost,
   updatePost,
-  deletePost
+  deletePost,
+  votePostUp,
+  votePostDown
 } from "./post";
 
 import { CATEGORIES_FETCHED, fetchCategories } from "./category";
@@ -39,6 +43,8 @@ export {
   POST_ADDED,
   POST_UPDATED,
   POST_DELETED,
+  POST_UP_VOTED,
+  POST_DOWN_VOTED,
   CATEGORIES_FETCHED,
   COMMENTS_FETCHED,
   COMMENT_SAVED,
@@ -51,6 +57,8 @@ export {
   savePost,
   updatePost,
   deletePost,
+  votePostUp,
+  votePostDown,
   fetchCategories,
   fetchPostComments,
   saveComment,

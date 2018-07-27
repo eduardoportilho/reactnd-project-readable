@@ -4,6 +4,8 @@ import {
   POST_ADDED,
   POST_UPDATED,
   POST_DELETED,
+  POST_UP_VOTED,
+  POST_DOWN_VOTED,
   COMMENT_SAVED,
   COMMENT_DELETED
 } from "../actions";
@@ -72,6 +74,32 @@ function post(state = INITIAL_STATE, action) {
       return {
         ...state,
         posts: state.posts.filter(post => post.id !== action.postId)
+      };
+    case POST_UP_VOTED:
+      return {
+        ...state,
+        posts: state.posts.map(
+          post =>
+            post.id === action.postId
+              ? {
+                  ...post,
+                  voteScore: post.voteScore + 1
+                }
+              : post
+        )
+      };
+    case POST_DOWN_VOTED:
+      return {
+        ...state,
+        posts: state.posts.map(
+          post =>
+            post.id === action.postId
+              ? {
+                  ...post,
+                  voteScore: post.voteScore - 1
+                }
+              : post
+        )
       };
     default:
       return state;
