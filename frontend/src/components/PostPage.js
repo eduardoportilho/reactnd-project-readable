@@ -1,6 +1,11 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import { Container, Header, Label, Image, Card } from "semantic-ui-react";
+import moment from "moment";
+import PageHeader from "./PageHeader";
 import CommentListContainer from "../containers/CommentListContainer";
+import { getUserAvatarURL } from "../utils/users";
+import PostControls from "./PostControls";
 
 class PostPage extends Component {
   handleDeletePost = () => {
@@ -19,32 +24,45 @@ class PostPage extends Component {
 
     return (
       <div>
-        {errorFetchingData && <div>Error: {errorFetchingData} </div>}
-        {errorSendingData && <div>Error: {errorSendingData} </div>}
-        <div>
-          <h1>{post.title}</h1>
-          <p>by {post.author}</p>
-          <p>at {post.timestamp}</p>
-          <p>{post.commentCount} comments</p>
-          <p>{post.body}</p>
-          <p>Category: {post.category}</p>
-          <div>
-            <h2>Score:</h2>
-            <p>Vote Score: {post.voteScore}</p>
+        <PageHeader />
+        <Container text style={{ marginTop: "7em" }}>
+          {errorFetchingData && <div>Error: {errorFetchingData} </div>}
+          {errorSendingData && <div>Error: {errorSendingData} </div>}
 
-            <button onClick={() => votePostUp(post.id)}>Vote Up</button>
+          <Card fluid>
+            <Card.Content>
+              <Card.Header>{post.title}</Card.Header>
+              <Card.Meta>
+                by{" "}
+                <Label image>
+                  <Image
+                    avatar
+                    className="label-on-meta-fix"
+                    src={getUserAvatarURL(post.author)}
+                  />
+                  {post.author}
+                </Label>{" "}
+                at {moment(post.timestamp).format("MMMM Do YYYY, h:mm a")}
+              </Card.Meta>
+            </Card.Content>
 
-            <button onClick={() => votePostDown(post.id)}>Vote Down</button>
-          </div>
+            <Card.Content>
+              <Card.Description>{post.body}</Card.Description>
+            </Card.Content>
+
+            <Card.Content extra>
+              <PostControls
+                post={post}
+                votePostUp={votePostUp}
+                votePostDown={votePostDown}
+                deletePost={this.handleDeletePost}
+                showEditControls
+              />
+            </Card.Content>
+          </Card>
 
           <CommentListContainer postId={post.id} />
-
-          <hr />
-
-          <Link to="/">Home</Link>
-          <Link to={`/edit-post/${post.id}`}>Edit</Link>
-          <button onClick={this.handleDeletePost}>Delete</button>
-        </div>
+        </Container>
       </div>
     );
   }

@@ -11,3 +11,7 @@ body {
 .inline-btns {
   padding-left: 1rem;
 }
+
+.label-on-meta-fix {
+  margin-right: 0.5em !important;
+}

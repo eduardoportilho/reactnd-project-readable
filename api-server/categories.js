@@ -7,18 +7,15 @@ const defaultData = {
   categories: [
     {
       name: "react",
-      path: "react",
-      color: "red"
+      path: "react"
     },
     {
       name: "redux",
-      path: "redux",
-      color: "teal"
+      path: "redux"
     },
     {
       name: "udacity",
-      path: "udacity",
-      color: "orange"
+      path: "udacity"
     }
   ]
 };

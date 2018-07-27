@@ -41,5 +41,18 @@ export const USERS = [
   }
 ];
 
-export const getAvatarURLFor = name =>
+export const getUserAvatarURL = name =>
   (USERS.find(user => user.name === name) || USERS[0]).avatar;
+
+export const getCategoryColor = category => {
+  switch (category) {
+    case "react":
+      return "red";
+    case "redux":
+      return "teal";
+    case "udacity":
+      return "orange";
+    default:
+      return "blue";
+  }
+};

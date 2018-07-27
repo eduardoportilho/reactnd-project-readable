@@ -7,10 +7,10 @@ import {
   Header,
   Menu,
   List,
-  Image,
-  Icon
+  Image
 } from "semantic-ui-react";
-import { getAvatarURLFor } from "../utils/users";
+import { getUserAvatarURL } from "../utils/users";
+import PostControls from "./PostControls";
 
 const SORT_OPTIONS = [
   {
@@ -63,49 +63,22 @@ class PostList extends Component {
           <List>
             {sortedPosts.map(post => (
               <List.Item key={post.id}>
-                <Image avatar src={getAvatarURLFor(post.author)} />
+                <Image avatar src={getUserAvatarURL(post.author)} />
                 <List.Content>
                   <List.Header>
                     <Link to={`/post/${post.id}`}>{post.title}</Link>
                   </List.Header>
                   <List.Description>
-                    <List horizontal relaxed>
-                      <List.Item>{post.commentCount} comments</List.Item>
-                      <List.Item>
-                        <span>Vote score: {post.voteScore}</span>
-                        <span className="inline-btns">
-                          <Icon
-                            link
-                            name="thumbs up outline"
-                            color="green"
-                            onClick={() => votePostUp(post.id)}
-                          />
-                          <Icon
-                            link
-                            name="thumbs down outline"
-                            color="red"
-                            onClick={() => votePostDown(post.id)}
-                          />
-                        </span>
-                      </List.Item>
-                    </List>
+                    <PostControls
+                      post={post}
+                      votePostUp={votePostUp}
+                      votePostDown={votePostDown}
+                    />
                   </List.Description>
                 </List.Content>
               </List.Item>
             ))}
           </List>
-
-          {/* <li key={post.id}>
-                <Link to={`/post/${post.id}`}>{post.title}</Link>
-                <span>{post.commentCount} comments</span>
-                <span>
-                  Vote Score: {post.voteScore}
-                  <button onClick={() => votePostUp(post.id)}>Vote Up</button>
-                  <button onClick={() => votePostDown(post.id)}>
-                    Vote Down
-                  </button>
-                </span>
-              </li> */}
         </Segment>
       </div>
     );

@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Card, Label, List } from "semantic-ui-react";
+import { getCategoryColor } from "../utils/users";
 
 const CategoryList = ({ categories }) => (
   <Card fluid>
@@ -14,7 +15,7 @@ const CategoryList = ({ categories }) => (
           <List.Item key={category.path}>
             <List.Content>
               <Link to={`/category/${category.path}`}>
-                <Label color={category.color} tag>
+                <Label color={getCategoryColor(category.name)} tag>
                   {category.name}
                 </Label>
               </Link>
