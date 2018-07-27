@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import CommentsContainer from "../containers/CommentsContainer";
+import CommentListContainer from "../containers/CommentListContainer";
 
 class PostPage extends Component {
   handleDeletePost = () => {
@@ -37,7 +37,7 @@ class PostPage extends Component {
             <button onClick={() => votePostDown(post.id)}>Vote Down</button>
           </div>
 
-          <CommentsContainer postId={post.id} />
+          <CommentListContainer postId={post.id} />
 
           <hr />
 

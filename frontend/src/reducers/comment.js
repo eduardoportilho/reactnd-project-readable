@@ -3,7 +3,9 @@ import {
   COMMENT_SAVED,
   COMMENT_DELETED,
   POST_DELETED,
-  COMMENT_UPDATED
+  COMMENT_UPDATED,
+  COMMENT_UP_VOTED,
+  COMMENT_DOWN_VOTED
 } from "../actions";
 
 const INITIAL_STATE = {
@@ -51,6 +53,38 @@ function comment(state = INITIAL_STATE, action) {
         comment => (comment.id === action.comment.id ? action.comment : comment)
       );
       postComments[action.comment.parentId] = comments;
+      return {
+        ...state,
+        postComments
+      };
+    case COMMENT_UP_VOTED:
+      postComments = { ...state.postComments };
+      comments = postComments[action.postId].map(
+        comment =>
+          comment.id === action.commentId
+            ? {
+                ...comment,
+                voteScore: comment.voteScore + 1
+              }
+            : comment
+      );
+      postComments[action.postId] = comments;
+      return {
+        ...state,
+        postComments
+      };
+    case COMMENT_DOWN_VOTED:
+      postComments = { ...state.postComments };
+      comments = postComments[action.postId].map(
+        comment =>
+          comment.id === action.commentId
+            ? {
+                ...comment,
+                voteScore: comment.voteScore - 1
+              }
+            : comment
+      );
+      postComments[action.postId] = comments;
       return {
         ...state,
         postComments

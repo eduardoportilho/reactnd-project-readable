@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import uuidv1 from "uuid/v1";
-import Comment from "./Comment";
+import CommentContainer from "../containers/CommentContainer";
 import EditComment from "./EditComment";
 
 class CommentList extends Component {
@@ -18,8 +18,6 @@ class CommentList extends Component {
       author: commentAuthor
     });
   };
-
-  onCommentDelete = commentId => this.props.deleteComment(commentId);
 
   onCommentEdit = comment =>
     this.setState({
@@ -46,7 +44,7 @@ class CommentList extends Component {
   };
 
   renderComments = () => {
-    const { comments, deleteComment } = this.props;
+    const { comments } = this.props;
     const { editingCommentId } = this.state;
     if (!comments.length) {
       return <div>None so far...</div>;
@@ -63,10 +61,9 @@ class CommentList extends Component {
                 onCancelEdit={this.onCancelEdit}
               />
             ) : (
-              <Comment
+              <CommentContainer
                 key={comment.id}
                 comment={comment}
-                onCommentDelete={deleteComment}
                 onCommentEdit={this.onCommentEdit}
               />
             )
