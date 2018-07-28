@@ -35,9 +35,8 @@ class PostList extends Component {
   handleSortByChange = (event, data) => {
     this.setState({ sortField: data.value });
   };
-
   render() {
-    const { posts, votePostUp, votePostDown } = this.props;
+    const { posts, votePostUp, votePostDown, deletePost } = this.props;
     const { sortField } = this.state;
     const sortedPosts = _.sortBy(posts, sortField).reverse();
     return (
@@ -72,12 +71,15 @@ class PostList extends Component {
                 <List.Content>
                   <List.Header>
                     <Link to={`/post/${post.id}`}>{post.title}</Link>
+                    <span className="post-list-author"> by {post.author}</span>
                   </List.Header>
                   <List.Description>
                     <PostControls
                       post={post}
                       votePostUp={votePostUp}
                       votePostDown={votePostDown}
+                      deletePost={() => deletePost(post.id)}
+                      showEditControls
                     />
                   </List.Description>
                 </List.Content>

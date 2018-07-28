@@ -6,8 +6,10 @@ const PageHeader = () => (
   <Menu fixed="top" inverted>
     <Container>
       <Menu.Item header>
-        <Icon inverted color="teal" name="book" size="big" />
-        <Link to="/">Readable</Link>
+        <Link to="/">
+          <Icon inverted color="teal" name="book" size="big" />
+          Readable
+        </Link>
       </Menu.Item>
 
       <Menu.Item position="right">
