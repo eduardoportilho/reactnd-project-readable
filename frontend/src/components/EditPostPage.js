@@ -133,7 +133,7 @@ class EditPostPage extends Component {
               />
 
               {isEditingPost && (
-                <Link to={`/post/${editedPost.id}`}>
+                <Link to={`/${editedPost.category}/${editedPost.id}`}>
                   <Button
                     content="Cancel"
                     labelPosition="left"

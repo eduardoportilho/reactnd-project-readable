@@ -23,7 +23,7 @@ class NewPostPageContainer extends Component {
         id: uuidv1(),
         ...post
       }).then(({ post }) => {
-        history.push(`/post/${post.id}`);
+        history.push(`/${post.category}/${post.id}`);
       });
 
     return (

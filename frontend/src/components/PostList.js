@@ -70,7 +70,9 @@ class PostList extends Component {
                 <Image avatar src={getUserAvatarURL(post.author)} />
                 <List.Content>
                   <List.Header>
-                    <Link to={`/post/${post.id}`}>{post.title}</Link>
+                    <Link to={`/${post.category}/${post.id}`}>
+                      {post.title}
+                    </Link>
                     <span className="post-list-author"> by {post.author}</span>
                   </List.Header>
                   <List.Description>

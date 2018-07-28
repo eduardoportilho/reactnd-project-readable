@@ -33,7 +33,7 @@ class EditPostPageContainer extends Component {
 
     const updatePostWithId = updatedPost =>
       updatePost(postId, updatedPost).then(({ post }) => {
-        history.push(`/post/${post.id}`);
+        history.push(`/${post.category}/${post.id}`);
       });
 
     // Using the "Fully uncontrolled component with a key" approach to reset the form content when the post is fetched.

@@ -12,9 +12,9 @@ function App() {
     <Router>
       <Switch>
         <Route exact path="/" component={HomePageContainer} />
-        <Route path="/post/:postId" component={PostPageContainer} />
         <Route path="/edit-post/:postId" component={EditPostPageContainer} />
         <Route path="/new-post" component={NewPostPageContainer} />
+        <Route path="/:categoryPath/:postId" component={PostPageContainer} />
         <Route path="/:categoryPath" component={CategoryPageContainer} />
         <Route component={RouteNotFound} />
       </Switch>
