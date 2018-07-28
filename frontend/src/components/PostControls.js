@@ -42,7 +42,7 @@ const PostControls = ({
       <List floated="right" horizontal>
         <List.Item>
           <Link to={`/edit-post/${post.id}`}>
-            <Icon link name="edit" onClick={() => votePostUp(post.id)} />
+            <Icon link name="edit" />
           </Link>
         </List.Item>
         <List.Item>

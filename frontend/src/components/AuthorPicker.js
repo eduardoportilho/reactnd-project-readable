@@ -1,40 +1,32 @@
 import React, { Component } from "react";
+import { Form } from "semantic-ui-react";
+import { USERS } from "../utils/users";
 
-const AUTHORS = [
-  "Binx Bolling",
-  "Patrick Bateman",
-  "Inigo Montoya",
-  "Jay Gatsby",
-  "Benno van Archimboldi"
-];
+const AUTHORS = USERS.map(user => ({
+  text: user.name,
+  value: user.name,
+  image: { avatar: true, src: user.avatar }
+}));
 
 class AuthorPicker extends Component {
-  handleAuthorChange = event => {
+  handleAuthorChange = (event, data) => {
     const { onAuthorChange } = this.props;
-    const author = event.target.value;
+    const author = data.value;
     this.setState({ author: author }, () => onAuthorChange(author));
   };
 
   render() {
     const { disabled, author } = this.props;
     return (
-      <label>
-        Author:
-        <select
-          value={author}
-          onChange={this.handleAuthorChange}
-          disabled={!!disabled}
-        >
-          <option value="" disabled>
-            Select one
-          </option>
-          {AUTHORS.map(anAuthor => (
-            <option key={anAuthor} value={anAuthor}>
-              {anAuthor}
-            </option>
-          ))}
-        </select>
-      </label>
+      <Form.Select
+        label="Author"
+        placeholder="Select"
+        selection
+        value={author}
+        onChange={this.handleAuthorChange}
+        disabled={!!disabled}
+        options={AUTHORS}
+      />
     );
   }
 }

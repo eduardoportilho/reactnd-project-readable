@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
-import { Container, Header, Label, Image, Card } from "semantic-ui-react";
+import { Container, Label, Image, Card } from "semantic-ui-react";
 import moment from "moment";
 import PageHeader from "./PageHeader";
 import CommentListContainer from "../containers/CommentListContainer";

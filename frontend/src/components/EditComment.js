@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Form, Button, Header, Segment } from "semantic-ui-react";
 import AuthorPicker from "./AuthorPicker";
 
 const NOT_EMPTY_REGEXP = /[\w]+/gi;
@@ -54,31 +55,45 @@ class EditComment extends Component {
     const isSubmitDisabled = !this.isValidComment();
     const isEditingComment = editedComment !== undefined;
     return (
-      <div>
-        <form>
-          <label>
-            {isEditingComment ? "Edit Comment:" : "Add a new comment:"}
-            <textarea
-              value={commentBody}
-              onChange={this.handleCommentBodyChange}
-            />
-          </label>
+      <Segment>
+        <Header as="h4">
+          {isEditingComment ? "Editing Comment" : "New Comment"}
+        </Header>
 
-          <AuthorPicker
-            author={commentAuthor}
-            onAuthorChange={this.handleCommentAuthorChange}
+        <Form reply>
+          <Form.TextArea
+            label="Comment"
+            value={commentBody}
+            onChange={this.handleCommentBodyChange}
           />
-          <input
-            type="submit"
-            value={isEditingComment ? "Update" : "Comment"}
+
+          <Form.Group>
+            <AuthorPicker
+              author={commentAuthor}
+              onAuthorChange={this.handleCommentAuthorChange}
+            />
+          </Form.Group>
+
+          <Button
+            content={isEditingComment ? "Update Comment" : "Add Comment"}
             onClick={this.handleCommentSubmit}
             disabled={isSubmitDisabled}
+            labelPosition="left"
+            icon="edit"
+            primary
           />
+
           {isEditingComment && (
-            <button onClick={this.handleCancelEdit}>Cancel</button>
+            <Button
+              content="Cancel"
+              onClick={this.handleCancelEdit}
+              labelPosition="left"
+              icon="cancel"
+              secondary
+            />
           )}
-        </form>
-      </div>
+        </Form>
+      </Segment>
     );
   }
 }

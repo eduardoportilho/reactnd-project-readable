@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import uuidv1 from "uuid/v1";
+import { Comment, Header, Segment } from "semantic-ui-react";
 import CommentContainer from "../containers/CommentContainer";
 import EditComment from "./EditComment";
 
@@ -76,15 +77,19 @@ class CommentList extends Component {
     const { errorFetchingData, errorSendingData } = this.props;
 
     return (
-      <div>
+      <Segment basic>
         {errorFetchingData && <div>Error: {errorFetchingData} </div>}
         {errorSendingData && <div>Error: {errorSendingData} </div>}
-        <div>
-          <h2>Comments:</h2>
+        <Comment.Group>
+          <Header as="h3" dividing>
+            Comments
+          </Header>
+
           {this.renderComments()}
+
           <EditComment onCommentSave={this.onCommentSave} />
-        </div>
-      </div>
+        </Comment.Group>
+      </Segment>
     );
   }
 }

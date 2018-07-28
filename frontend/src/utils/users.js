@@ -13,7 +13,7 @@ export const USERS = [
   },
   {
     name: "Jay Gatsby",
-    avatar: "/images/jay.jpg"
+    avatar: "/images/jay.png"
   },
   {
     name: "Angela Argo",
