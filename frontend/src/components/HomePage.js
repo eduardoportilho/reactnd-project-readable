@@ -12,8 +12,9 @@ const HomePage = ({ errorFetchingData, categories, posts }) => (
 
       {errorFetchingData && <div>Error: {errorFetchingData} </div>}
 
-      <CategoryList categories={categories} />
       <PostListContainer posts={posts} />
+
+      <CategoryList categories={categories} />
     </Container>
   </div>
 );

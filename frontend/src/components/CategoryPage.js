@@ -2,6 +2,7 @@ import React from "react";
 import { Container, Header } from "semantic-ui-react";
 import PageHeader from "./PageHeader";
 import RouteNotFound from "./RouteNotFound";
+import CategoryList from "./CategoryList";
 import PostListContainer from "../containers/PostListContainer";
 
 const CategoryPage = ({
@@ -24,7 +25,12 @@ const CategoryPage = ({
 
         {errorFetchingData && <div>Error: {errorFetchingData} </div>}
 
-        <PostListContainer posts={postsFromCategory} />
+        <PostListContainer
+          posts={postsFromCategory}
+          title={`Posts in '${pageCategory.name}'`}
+        />
+
+        <CategoryList categories={categories} />
       </Container>
     </div>
   );

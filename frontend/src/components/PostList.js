@@ -36,14 +36,14 @@ class PostList extends Component {
     this.setState({ sortField: data.value });
   };
   render() {
-    const { posts, votePostUp, votePostDown, deletePost } = this.props;
+    const { posts, votePostUp, votePostDown, deletePost, title } = this.props;
     const { sortField } = this.state;
     const sortedPosts = _.sortBy(posts, sortField).reverse();
     return (
       <div>
         <Menu secondary attached="top">
           <Menu.Item header>
-            <Header as="h2">Posts</Header>
+            <Header as="h2">{title || "All Posts"}</Header>
           </Menu.Item>
 
           <Menu.Item position="right">
