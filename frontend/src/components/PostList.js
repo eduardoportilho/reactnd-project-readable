@@ -61,6 +61,11 @@ class PostList extends Component {
         </Menu>
         <Segment attached>
           <List>
+            {!sortedPosts.length && (
+              <Header as="h4" disabled>
+                Nothing to see here..
+              </Header>
+            )}
             {sortedPosts.map(post => (
               <List.Item key={post.id}>
                 <Image avatar src={getUserAvatarURL(post.author)} />

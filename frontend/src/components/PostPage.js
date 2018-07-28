@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Container, Label, Image, Card } from "semantic-ui-react";
+import { Container, Image, Card } from "semantic-ui-react";
 import moment from "moment";
 import PageHeader from "./PageHeader";
 import CommentListContainer from "../containers/CommentListContainer";
@@ -30,18 +30,15 @@ class PostPage extends Component {
 
           <Card fluid>
             <Card.Content>
+              <Image
+                floated="right"
+                size="mini"
+                src={getUserAvatarURL(post.author)}
+              />
               <Card.Header>{post.title}</Card.Header>
               <Card.Meta>
-                by{" "}
-                <Label image>
-                  <Image
-                    avatar
-                    className="label-on-meta-fix"
-                    src={getUserAvatarURL(post.author)}
-                  />
-                  {post.author}
-                </Label>{" "}
-                at {moment(post.timestamp).format("MMMM Do YYYY, h:mm a")}
+                by {post.author} at{" "}
+                {moment(post.timestamp).format("MMMM Do YYYY, h:mm a")}
               </Card.Meta>
             </Card.Content>
 
