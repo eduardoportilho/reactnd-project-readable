@@ -14,7 +14,7 @@ const CategoryList = ({ categories }) => (
         {categories.map(category => (
           <List.Item key={category.path}>
             <List.Content>
-              <Link to={`/category/${category.path}`}>
+              <Link to={`/${category.path}`}>
                 <Label color={getCategoryColor(category.name)} tag>
                   {category.name}
                 </Label>

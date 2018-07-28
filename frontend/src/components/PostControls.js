@@ -13,7 +13,7 @@ const PostControls = ({
   <div>
     <List horizontal relaxed>
       <List.Item>
-        <Link to={`/category/${post.category}`}>
+        <Link to={`/${post.category}`}>
           <Label color={getCategoryColor(post.category)} tag size="mini">
             {post.category}
           </Label>
