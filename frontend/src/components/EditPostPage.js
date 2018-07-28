@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import { Container, Form, Header, Segment, Button } from "semantic-ui-react";
+import PageHeader from "./PageHeader";
 import AuthorPicker from "./AuthorPicker";
+import { getCategoryColor } from "../utils/users";
 
 const NOT_EMPTY_REGEXP = /[\w]+/gi;
 
@@ -20,8 +23,8 @@ class EditPostPage extends Component {
     this.setState({ author });
   };
 
-  handleCategoryChange = event => {
-    this.setState({ categoryPath: event.target.value });
+  handleCategoryChange = (event, data) => {
+    this.setState({ categoryPath: data.value });
   };
 
   handleBodyChange = event => {
@@ -66,56 +69,82 @@ class EditPostPage extends Component {
 
     const isEditingPost = editedPost !== undefined;
     const isSubmitDisabled = !this.isValidPost();
+    const categoryOptions = categories.map(category => ({
+      text: category.name,
+      value: category.path,
+      icon: {
+        color: getCategoryColor(category.name),
+        name: "tag"
+      }
+    }));
 
     return (
       <div>
-        {errorFetchingData && <div>Error: {errorFetchingData} </div>}
-        {errorSendingData && <div>Error: {errorSendingData} </div>}
-        <div>
-          <h1>{isEditingPost ? "Edit Post" : "New Post"}</h1>
-          <form>
-            <label>
-              Title:
-              <input
-                type="text"
-                value={title}
-                onChange={this.handleTitleChange}
+        <PageHeader />
+        <Container text style={{ marginTop: "7em" }}>
+          {errorFetchingData && <div>Error: {errorFetchingData} </div>}
+          {errorSendingData && <div>Error: {errorSendingData} </div>}
+
+          <Segment>
+            <Header as="h2">
+              {isEditingPost ? "Editing Post" : "New Post"}
+            </Header>
+
+            <Form>
+              <Form.Field>
+                <label>Title</label>
+                <input
+                  placeholder="Post title"
+                  value={title}
+                  onChange={this.handleTitleChange}
+                />
+              </Form.Field>
+
+              <Form.Group widths="equal">
+                <AuthorPicker
+                  author={author}
+                  onAuthorChange={this.handleAuthorChange}
+                />
+
+                <Form.Select
+                  label="Category"
+                  placeholder="Select"
+                  selection
+                  value={categoryPath}
+                  onChange={this.handleCategoryChange}
+                  options={categoryOptions}
+                />
+              </Form.Group>
+
+              <Form.TextArea
+                label="Content"
+                placeholder="What's in your head?"
+                value={body}
+                onChange={this.handleBodyChange}
               />
-            </label>
 
-            <AuthorPicker
-              author={author}
-              onAuthorChange={this.handleAuthorChange}
-            />
+              <Button
+                content={isEditingPost ? "Update Post" : "Add New Post"}
+                onClick={this.handlePostSubmit}
+                disabled={isSubmitDisabled}
+                labelPosition="left"
+                icon="edit"
+                primary
+              />
 
-            <label>
-              Category:
-              <select value={categoryPath} onChange={this.handleCategoryChange}>
-                <option value="" disabled>
-                  Select one
-                </option>
-                {categories.map(aCategory => (
-                  <option key={aCategory.path} value={aCategory.path}>
-                    {aCategory.name}
-                  </option>
-                ))}
-              </select>
-            </label>
-
-            <label>
-              Content:
-              <textarea value={body} onChange={this.handleBodyChange} />
-            </label>
-
-            <input
-              type="submit"
-              value={isEditingPost ? "Update" : "Create"}
-              onClick={this.handlePostSubmit}
-              disabled={isSubmitDisabled}
-            />
-          </form>
-          <Link to="/">Home</Link>
-        </div>
+              {isEditingPost && (
+                <Link to={`/post/${editedPost.id}`}>
+                  <Button
+                    content="Cancel"
+                    labelPosition="left"
+                    icon="cancel"
+                    secondary
+                  />
+                </Link>
+              )}
+            </Form>
+          </Segment>
+        </Container>
       </div>
     );
   }
